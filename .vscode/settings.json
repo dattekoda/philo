@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"philo.h": "c",
+		"libft.h": "c",
+		"_pthread_types.h": "c"
+	}
+}

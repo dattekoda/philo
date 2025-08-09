@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 14:17:22 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/09 00:13:54 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/09 10:00:12 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	high_prec_msleep(long ms)
 	long	start;
 
 	start = get_time_in_ms();
-	ms *= 1000;
 	while (get_time_in_ms() < start + ms)
 		usleep(200);
 }

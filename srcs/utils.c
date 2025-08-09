@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 14:17:22 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/09 10:00:12 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/09 16:52:50 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	ft_putendl_err(char *str)
 	write(STDERR_FILENO, "\n", 1);
 }
 
-long	ft_atol(char *str)
+int	simple_atoi(char *str)
 {
-	long	num;
+	int	num;
 
 	num = 0;
 	while (*str && '0' <= *str && *str <= '9')
@@ -53,10 +53,15 @@ long	ft_atol(char *str)
 // 	return (0);
 // }
 
-int	print_state(t_data *data, int idx, char *state)
+int	print_state(t_philo *ph, int idx, char *state)
 {
-	return (printf("%ld %d %s\n", data->now_ms,
-		idx, state));
+	if (pthread_mutex_lock(&ph->data->print_mutex))
+		return (ERR);
+	printf("%ld %d %s\n", ph->now_ms,
+		idx, state);
+	if (pthread_mutex_unlock(&ph->data->print_mutex))
+		return (ERR);
+	return (SUCCESS);
 }
 
 void	high_prec_msleep(long ms)

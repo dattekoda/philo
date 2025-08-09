@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:38:46 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/09 00:14:41 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/09 16:43:41 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,20 @@ typedef struct s_data
 	bool			optional;
 	int				num_times_eat; // 5
 	int				num_philo; // 1
-	long			time_to_die; // 2
-	long			time_to_eat; // 3
-	long			time_to_sleep; // 4
+	long			time_die; // 2
+	long			time_eat; // 3
+	long			time_sleep; // 4
 	long			start_ms;
-	long			now_ms;
-	pthread_mutex_t	*fork; // malloc
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	*fork_mutex; // malloc
 }	t_data;
 
 typedef struct s_philo
 {
 	int				idx;
 	int				state; //0:none 1:die 2:eat 3:sleep
-	long			last_time_to_eat;
-	long			last_time_to_sleep;
+	long			last_eat;
+	long			now_ms;
 	t_data			*data;
 }	t_philo;
 
@@ -66,8 +66,8 @@ int		set_philos(t_data *data, t_philo **philos);
 // utils.c
 long	get_time_in_ms(void);
 void	ft_putendl_err(char *str);
-long	ft_atol(char *str);
-int		print_state(t_data *data, int idx, char *state);
+int		simple_atoi(char *str);
+int		print_state(t_philo *ph, int idx, char *state);
 void	high_prec_msleep(long ms);
 
 #endif

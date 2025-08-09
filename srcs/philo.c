@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 20:55:29 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/09 09:58:30 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/09 16:41:47 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,26 @@ void	*routine_odd(void	*arg)
 	ph = (t_philo *)arg;
 	while (1)
 	{
-		ph->data->now_ms = get_time_in_ms() - ph->data->start_ms;
-		if (ph->data->time_to_die < ph->last_time_to_eat - ph->data->now_ms)
+		ph->now_ms = get_time_in_ms() - ph->data->start_ms;
+		if (ph->data->time_die < ph->now_ms - ph->last_eat)
 			return ("die");
-		right = pthread_mutex_lock(&ph->data->fork[ph->idx]);
+		right = pthread_mutex_lock(&ph->data->fork_mutex[ph->idx]);
 		if (!right)
-			print_state(ph->data, ph->idx, STATE_FORK);
-		left = pthread_mutex_lock(&ph->data->fork[(ph->idx + 1) % ph->data->num_philo]);
+			print_state(ph, ph->idx, STATE_FORK);
+		left = pthread_mutex_lock(&ph->data->fork_mutex[(ph->idx + 1) % ph->data->num_philo]);
 		if (!left)
-			print_state(ph->data, (ph->idx + 1) % ph->data->num_philo, STATE_FORK);
+			print_state(ph, (ph->idx + 1) % ph->data->num_philo, STATE_FORK);
 		if (!left && !right)
 		{
-			print_state(ph->data, ph->idx, STATE_EAT);
-			high_prec_msleep(ph->data->time_to_eat);
-			pthread_mutex_unlock(&ph->data->fork[ph->idx]);
-			pthread_mutex_unlock(&ph->data->fork[(ph->idx + 1) % ph->data->num_philo]);
+			print_state(ph, ph->idx, STATE_EAT);
+			high_prec_msleep(ph->data->time_eat);
+			ph->last_eat = ph->now_ms + ph->data->time_eat;
+			pthread_mutex_unlock(&ph->data->fork_mutex[ph->idx]);
+			pthread_mutex_unlock(&ph->data->fork_mutex[(ph->idx + 1) % ph->data->num_philo]);
 		}
 	}
-	return (NULL);
 }
+
 void	*routine_even(void	*arg)
 {
 	t_philo	*ph;
@@ -49,21 +50,22 @@ void	*routine_even(void	*arg)
 	ph = (t_philo *)arg;
 	while (1)
 	{
-		ph->data->now_ms = get_time_in_ms() - ph->data->start_ms;
-		if (ph->data->time_to_die < ph->last_time_to_eat - ph->data->now_ms)
+		ph->now_ms = get_time_in_ms() - ph->data->start_ms;
+		if (ph->data->time_die < ph->now_ms - ph->last_eat)
 			return ("die");
-		left = pthread_mutex_lock(&ph->data->fork[(ph->idx + 1) % ph->data->num_philo]);
+		left = pthread_mutex_lock(&ph->data->fork_mutex[(ph->idx + 1) % ph->data->num_philo]);
 		if (!left)
-			print_state(ph->data, (ph->idx + 1) % ph->data->num_philo, STATE_FORK);
-		right = pthread_mutex_lock(&ph->data->fork[ph->idx]);
+			print_state(ph, (ph->idx + 1) % ph->data->num_philo, STATE_FORK);
+		right = pthread_mutex_lock(&ph->data->fork_mutex[ph->idx]);
 		if (!right)
-			print_state(ph->data, ph->idx, STATE_FORK);
+			print_state(ph, ph->idx, STATE_FORK);
 		if (!left && !right)
 		{
-			print_state(ph->data, ph->idx, STATE_EAT);
-			high_prec_msleep(ph->data->time_to_eat);
-			pthread_mutex_unlock(&ph->data->fork[ph->idx]);
-			pthread_mutex_unlock(&ph->data->fork[(ph->idx + 1) % ph->data->num_philo]);
+			print_state(ph, ph->idx, STATE_EAT);
+			high_prec_msleep(ph->data->time_eat);
+			ph->last_eat = ph->now_ms + ph->data->time_eat;
+			pthread_mutex_unlock(&ph->data->fork_mutex[ph->idx]);
+			pthread_mutex_unlock(&ph->data->fork_mutex[(ph->idx + 1) % ph->data->num_philo]);
 		}
 	}
 	return (NULL);
@@ -87,12 +89,12 @@ int	philosopher(t_data *data)
 	{
 		if (i % 2 == 0 && pthread_create(&threads[i], NULL, routine_even, &philos[i]))
 		{
-			print_state(data, i, STATE_DIE);
+			print_state(&philos[i], i, STATE_DIE);
 			break ;
 		}
 		if (i % 2 == 1 && pthread_create(&threads[i], NULL, routine_odd, &philos[i]))
 		{
-			print_state(data, i, STATE_DIE);
+			print_state(&philos[i], i, STATE_DIE);
 			break ;
 		}
 	}

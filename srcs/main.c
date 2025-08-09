@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:41:29 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/08 21:34:22 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/09 16:50:29 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ int	main(int argc, char **argv)
 	if (set_data(argc, argv, &data))
 		return (ERR);
 	if (philosopher(&data))
-		return (free(data.fork), ERR);
-	return (free(data.fork), SUCCESS);
+		return (free_data(&data), ERR);
+	return (free_data(&data), SUCCESS);
 }

@@ -1,24 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/08 22:05:11 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/09 17:49:02 by khanadat         ###   ########.fr       */
+/*   Created: 2025/08/09 17:50:55 by khanadat          #+#    #+#             */
+/*   Updated: 2025/08/09 18:01:53 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_data(t_data *data)
+int	wait_until_all_set(t_data *data)
 {
-	int	i;
+	
+}
 
-	i = -1;
-	while (++i < data->num_philo)
-		pthread_mutex_destroy(&data->fork_mutex[i]);
-	free(data->fork_mutex);
-	pthread_mutex_destroy(&data->print_mutex);
+void	*routine(void *arg)
+{
+	t_philo	*ph;
+
+	ph = (t_philo *)arg;
+	if (wait_until_all_set(ph->data))
+		return (ERR);
+	while (1)
+	{
+		ph->now_ms = get_time_in_ms();
+		
+	}
 }

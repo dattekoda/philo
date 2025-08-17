@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:38:46 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/09 16:43:41 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/09 18:02:20 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_data
 	long			time_eat; // 3
 	long			time_sleep; // 4
 	long			start_ms;
+	pthread_mutex_t	
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	*fork_mutex; // malloc
 }	t_data;
@@ -58,6 +59,9 @@ void	free_data(t_data *data);
 
 // philo.c
 int		philosopher(t_data *data);
+
+// routine.c
+void	*routine(void *arg);
 
 // set.c
 int		set_data(int argc, char **argv, t_data *data);

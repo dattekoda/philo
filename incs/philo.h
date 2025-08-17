@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:38:46 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/09 18:02:20 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/17 15:08:06 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,10 @@ typedef struct s_data
 	bool			optional;
 	int				num_times_eat; // 5
 	int				num_philo; // 1
-	long			time_die; // 2
-	long			time_eat; // 3
-	long			time_sleep; // 4
-	long			start_ms;
-	pthread_mutex_t	
+	int				time_die; // 2
+	int				time_eat; // 3
+	int				time_sleep; // 4
+	int				start_ms;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	*fork_mutex; // malloc
 }	t_data;

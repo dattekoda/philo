@@ -6,31 +6,21 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 14:17:22 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/09 16:52:50 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/18 11:52:20 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	get_time_in_ms(void)
+int	get_time_in_ms(void)
 {
-	long			ms;
+	int				ms;
 	struct timeval	tv;
 
-	gettimeofday(&tv, NULL);
+	if (gettimeofday(&tv, NULL))
+		return (ft_putendl_err("gettimeofday"), ERR);
 	ms = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	return (ms);
-}
-
-void	ft_putendl_err(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	write(STDERR_FILENO, str, i);
-	write(STDERR_FILENO, "\n", 1);
 }
 
 int	simple_atoi(char *str)
@@ -53,22 +43,27 @@ int	simple_atoi(char *str)
 // 	return (0);
 // }
 
-int	print_state(t_philo *ph, int idx, char *state)
+int	print_state(t_philo *ph, char *state)
 {
 	if (pthread_mutex_lock(&ph->data->print_mutex))
-		return (ERR);
-	printf("%ld %d %s\n", ph->now_ms,
-		idx, state);
+		return (ft_putendl_err(ERR_LOCK), ERR);
+	if (printf("%ld %d %s\n", ph->now_ms,
+		ph->idx, state) < 0)
+		return (ft_putendl_err(ERR_PRINTF), ERR);
 	if (pthread_mutex_unlock(&ph->data->print_mutex))
-		return (ERR);
+		return (ft_putendl_err(ERR_LOCK), ERR);
 	return (SUCCESS);
 }
 
-void	high_prec_msleep(long ms)
+int	high_prec_usleep(int ms)
 {
-	long	start;
+	int	start;
 
 	start = get_time_in_ms();
+	if (start < 0)
+		return (ERR);
 	while (get_time_in_ms() < start + ms)
-		usleep(200);
+		if (usleep(200))
+			return (ft_putendl_err("usleep"), ERR);
+	return (SUCCESS);
 }

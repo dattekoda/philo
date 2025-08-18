@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 14:17:22 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/18 11:52:20 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/18 16:23:30 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,16 @@ int	simple_atoi(char *str)
 // 	return (0);
 // }
 
-int	print_state(t_philo *ph, char *state)
+void	print_state(t_philo *ph, char *state)
 {
-	if (pthread_mutex_lock(&ph->data->print_mutex))
-		return (ft_putendl_err(ERR_LOCK), ERR);
-	if (printf("%ld %d %s\n", ph->now_ms,
+	if (pthread_mutex_lock(&ph->mutex->print_mutex))
+		exit_philo(ph, ERR_LOCK);
+	ph->now_ms = get_time_in_ms() - ph->data->start_ms;
+	if (printf("%d %d %s\n", ph->now_ms,
 		ph->idx, state) < 0)
-		return (ft_putendl_err(ERR_PRINTF), ERR);
-	if (pthread_mutex_unlock(&ph->data->print_mutex))
-		return (ft_putendl_err(ERR_LOCK), ERR);
-	return (SUCCESS);
+		exit_philo(ph, ERR_PRINTF);
+	if (pthread_mutex_unlock(&ph->mutex->print_mutex))
+		exit_philo(ph, ERR_UNLOCK);
 }
 
 int	high_prec_usleep(int ms)

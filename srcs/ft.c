@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:48:24 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/18 11:52:24 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/18 16:04:36 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,21 @@ void	ft_putendl_err(char *str)
 		str_len++;
 	write(STDERR_FILENO, str, str_len);
 	write(STDERR_FILENO, "\n", 1);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void	*cal;
+	size_t	cal_size;
+
+	if (nmemb > SIZE_MAX / nmemb)
+		return (NULL);
+	cal_size = size * nmemb;
+	cal = (void *)malloc(cal_size);
+	if (!cal)
+		return (NULL);
+	memset(cal, 0, cal_size);
+	return (cal);
 }
 
 // int	main(void)

@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 17:50:55 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/18 11:48:08 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/18 16:26:16 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,33 @@ void	routine_eat(t_philo *ph)
 	left = (ph->idx + 1) % ph->data->num_philo;
 	if (right < left)
 		ft_swap(&left, &right);
-	if (pthread_mutex_lock(&ph->data->fork_mutex[left]))
+	if (pthread_mutex_lock(&ph->mutex->fork_mutex[left]))
 		exit_philo(ph, ERR_LOCK);
-	if (print_state(ph, STATE_FORK))
-		exit_philo(ph, NULL);
-	if (pthread_mutex_lock(&ph->data->fork_mutex[right]))
+	print_state(ph, STATE_FORK);
+	if (pthread_mutex_lock(&ph->mutex->fork_mutex[right]))
 		exit_philo(ph, ERR_LOCK);
-	if (print_state(ph, STATE_FORK))
-		exit_philo(ph, NULL);
-	if (print_state(ph, STATE_EAT))
-		exit_philo(ph, NULL);
+	print_state(ph, STATE_FORK);
+	print_state(ph, STATE_EAT);
 	if (high_prec_usleep(ph->data->time_eat))
 		exit_philo(ph, NULL);
-	ph->last_eat = get_time_in_ms();
-	if (pthread_mutex_unlock(&ph->data->fork_mutex[right]))
+	// increment numbers of list
+	ph->last_eat = get_time_in_ms() - ph->data->start_ms;
+	if (pthread_mutex_unlock(&ph->mutex->fork_mutex[right]))
 		exit_philo(ph, ERR_UNLOCK);
-	if (pthread_mutex_unlock(&ph->data->fork_mutex[left]))
+	if (pthread_mutex_unlock(&ph->mutex->fork_mutex[left]))
 		exit_philo(ph, ERR_UNLOCK);
+}
+
+void	routine_sleep(t_philo *ph)
+{
+	print_state(ph, STATE_SLEEP);
+	if (high_prec_usleep(ph->data->time_sleep))
+		exit_philo(ph, NULL);
+}
+
+void	routine_think(t_philo *ph)
+{
+	print_state(ph, STATE_THINK);
 }
 
 void	*routine(void *arg)
@@ -54,7 +64,16 @@ void	*routine(void *arg)
 	// 	return (ERR);
 	while (1)
 	{
-		ph->now_ms = get_time_in_ms();
+		ph->now_ms = get_time_in_ms() - ph->data->start_ms;
 		routine_eat(ph);
+		if (is_end(ph) || is_dead(ph))
+			break ;
+		routine_sleep(ph);
+		if (is_end(ph) || is_dead(ph))
+			break ;
+		routine_think(ph);
+		if (is_end(ph) || is_dead(ph))
+			break ;
 	}
+	return (NULL);
 }

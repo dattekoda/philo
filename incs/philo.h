@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:38:46 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/18 16:21:07 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/18 20:22:25 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int		set_philos(t_data *data, t_mutex *mutex, t_philo **philos);
 // utils.c
 int		get_time_in_ms(void);
 int		simple_atoi(char *str);
-int		print_state(t_philo *ph, char *state);
+void	print_state(t_philo *ph, char *state);
 int		high_prec_usleep(int ms);
 
 #endif

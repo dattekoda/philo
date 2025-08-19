@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 17:50:55 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/19 12:03:09 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/19 12:23:17 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	*routine(void *arg)
 	t_philo	*ph;
 
 	ph = (t_philo *)arg;
+	print_state(ph, "is ok");
 	wait_all_threads(ph);
 	is_odd(ph);
 	while (1)

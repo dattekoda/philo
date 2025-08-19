@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 14:17:22 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/18 16:23:30 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/19 11:55:02 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	print_state(t_philo *ph, char *state)
 		exit_philo(ph, ERR_LOCK);
 	ph->now_ms = get_time_in_ms() - ph->data->start_ms;
 	if (printf("%d %d %s\n", ph->now_ms,
-		ph->idx, state) < 0)
+		ph->idx + 1, state) < 0)
 		exit_philo(ph, ERR_PRINTF);
 	if (pthread_mutex_unlock(&ph->mutex->print_mutex))
 		exit_philo(ph, ERR_UNLOCK);

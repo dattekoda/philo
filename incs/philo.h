@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:38:46 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/19 10:37:12 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/19 12:00:00 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ typedef struct s_data
 	int		time_die; // 2
 	int		time_eat; // 3
 	int		time_sleep; // 4
-	int		start_ms;
 	int		created_num;
+	long	start_ms;
 	int		*list_eat_nums; // malloc
 }	t_data;
 

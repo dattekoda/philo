@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 17:50:55 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/19 10:42:51 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/19 12:03:09 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,14 @@ void	update_eat(t_philo *ph)
 	print_state(ph, STATE_EAT);
 	if (high_prec_usleep(ph->data->time_eat))
 		exit_philo(ph, NULL);
-	if (pthread_mutex_lock(&ph->mutex->list_mutex))
-		exit_philo(ph, ERR_LOCK);
-	(ph->data->list_eat_nums[ph->idx])++;
-	if (pthread_mutex_unlock(&ph->mutex->list_mutex))
-		exit_philo(ph, ERR_UNLOCK);
+	if (ph->data->optional)
+	{
+		if (pthread_mutex_lock(&ph->mutex->list_mutex))
+			exit_philo(ph, ERR_LOCK);
+		(ph->data->list_eat_nums[ph->idx])++;
+		if (pthread_mutex_unlock(&ph->mutex->list_mutex))
+			exit_philo(ph, ERR_UNLOCK);
+	}
 	ph->last_eat = get_time_in_ms() - ph->data->start_ms;
 }
 
@@ -32,8 +35,6 @@ void	routine_eat(t_philo *ph)
 
 	right = ph->idx;
 	left = (ph->idx + 1) % ph->data->num_philo;
-	if (right % 2 == 1)
-		ft_swap(&left, &right);
 	if (pthread_mutex_lock(&ph->mutex->fork_mutex[right]))
 		exit_philo(ph, ERR_LOCK);
 	print_state(ph, STATE_FORK);
@@ -79,12 +80,19 @@ void	wait_all_threads(t_philo *ph)
 			break ;
 }
 
+void	is_odd(t_philo *ph)
+{
+	if (ph->idx % 2 == 1)
+		high_prec_usleep(ph->data->time_eat / 2);
+}
+
 void	*routine(void *arg)
 {
 	t_philo	*ph;
 
 	ph = (t_philo *)arg;
 	wait_all_threads(ph);
+	is_odd(ph);
 	while (1)
 	{
 		ph->now_ms = get_time_in_ms() - ph->data->start_ms;

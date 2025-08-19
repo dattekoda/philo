@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 22:05:11 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/18 15:43:41 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/19 11:21:59 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,8 @@ void	free_philo(t_data *data, t_mutex *mutex)
 	while (++i < data->num_philo)
 		pthread_mutex_destroy(&mutex->fork_mutex[i]);
 	free(mutex->fork_mutex);
+	pthread_mutex_destroy(&mutex->list_mutex);
 	pthread_mutex_destroy(&mutex->print_mutex);
+	pthread_mutex_destroy(&mutex->created_num_mutex);
+	pthread_mutex_destroy(&mutex->start_ms_mutex);
 }

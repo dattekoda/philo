@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:48:24 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/18 16:04:36 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/19 11:36:05 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	void	*cal;
 	size_t	cal_size;
 
-	if (nmemb > SIZE_MAX / nmemb)
+	if (size != 0 && nmemb > SIZE_MAX / size)
 		return (NULL);
 	cal_size = size * nmemb;
-	cal = (void *)malloc(cal_size);
+	cal = malloc(cal_size);
 	if (!cal)
 		return (NULL);
 	memset(cal, 0, cal_size);

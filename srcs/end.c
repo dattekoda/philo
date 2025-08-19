@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 14:56:26 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/19 11:16:46 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/19 16:18:43 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ int	is_end(t_philo *ph)
 	{
 		if (pthread_mutex_lock(&ph->mutex->list_mutex))
 			exit_philo(ph, ERR_LOCK);
-		i = -1;
-		while (++i < ph->data->num_philo)
-			if (ph->data->num_times_eat <= ph->data->list_eat_nums[i])
-				return (pthread_mutex_unlock(&ph->mutex->list_mutex), END);
+		i = 0;
+		while (i < ph->data->num_philo
+			&& ph->data->num_times_eat <= ph->data->list_eat_nums[i])
+			i++;
+		if (i == ph->data->num_philo)
+			return (pthread_mutex_unlock(&ph->mutex->list_mutex), END);
 		if (pthread_mutex_unlock(&ph->mutex->list_mutex))
 			exit_philo(ph, ERR_UNLOCK);
 	}

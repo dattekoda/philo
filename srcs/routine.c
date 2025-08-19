@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 17:50:55 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/19 12:23:17 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/19 16:16:41 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,14 @@ void	wait_all_threads(t_philo *ph)
 	(ph->data->created_num)++;
 	if (pthread_mutex_unlock(&ph->mutex->created_num_mutex))
 		exit_philo(ph, ERR_UNLOCK);
-	if (pthread_mutex_lock(&ph->mutex->start_ms_mutex))
-		exit_philo(ph, ERR_LOCK);
-	(ph->data->start_ms) = get_time_in_ms();
-	if (ph->data->start_ms < 0)
-		exit_philo \
-		((pthread_mutex_unlock(&ph->mutex->start_ms_mutex), ph), NULL);
-	if (pthread_mutex_unlock(&ph->mutex->start_ms_mutex))
-		exit_philo(ph, ERR_UNLOCK);
 	while (1)
+	{
 		if (ph->data->created_num == ph->data->num_philo)
 			break ;
+		usleep(100);
+	}
+	if (ph->idx + 1 == ph->data->num_philo)
+		ph->data->start_ms = get_time_in_ms();
 }
 
 void	is_odd(t_philo *ph)
@@ -91,7 +88,6 @@ void	*routine(void *arg)
 	t_philo	*ph;
 
 	ph = (t_philo *)arg;
-	print_state(ph, "is ok");
 	wait_all_threads(ph);
 	is_odd(ph);
 	while (1)

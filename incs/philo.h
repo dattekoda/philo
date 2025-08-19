@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:38:46 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/18 20:22:25 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/19 10:37:12 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_mutex
 {
 	pthread_mutex_t	list_mutex;
 	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	created_num_mutex;
+	pthread_mutex_t	start_ms_mutex;
 	pthread_mutex_t	*fork_mutex; // malloc
 }	t_mutex;
 
@@ -56,6 +58,7 @@ typedef struct s_data
 	int		time_eat; // 3
 	int		time_sleep; // 4
 	int		start_ms;
+	int		created_num;
 	int		*list_eat_nums; // malloc
 }	t_data;
 

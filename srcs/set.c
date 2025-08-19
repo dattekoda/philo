@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:49:22 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/18 16:21:17 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/19 10:37:34 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	set_data(int argc, char **argv, t_data *data)
 		|| data->time_eat < 0 || data->time_die < 0
 		|| (data->optional && data->num_times_eat < 0))
 		return (ft_putendl_err("Invalid format of arguments."), ERR);
+	data->created_num = 0;
 	if (data->optional)
 	{
 		data->list_eat_nums = ft_calloc(data->num_philo, sizeof(int));
@@ -53,6 +54,10 @@ int	set_mutex(t_data *data, t_mutex *mutex)
 	if (pthread_mutex_init(&mutex->print_mutex, NULL))
 		return (free_philo(data, mutex), ft_putendl_err(ERR_INIT), ERR);
 	if (pthread_mutex_init(&mutex->list_mutex, NULL))
+		return (free_philo(data, mutex), ft_putendl_err(ERR_INIT), ERR);
+	if (pthread_mutex_init(&mutex->created_num_mutex, NULL))
+		return (free_philo(data, mutex), ft_putendl_err(ERR_INIT), ERR);
+	if (pthread_mutex_init(&mutex->start_ms_mutex, NULL))
 		return (free_philo(data, mutex), ft_putendl_err(ERR_INIT), ERR);
 	return (SUCCESS);
 }

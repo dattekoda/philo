@@ -28,7 +28,7 @@ bool	sleep_until_all_threads_are_created(t_philo *philo)
 	philo->common->born_count++;
 	if (set_time_to_start_do_philo(philo) == false)
 		return (pthread_mutex_unlock \
-			(&philo->common->born_count_mutex) == false);
+			(&philo->common->born_count_mutex), false);
 	pthread_mutex_unlock(&philo->common->born_count_mutex);
 	while (true)
 	{

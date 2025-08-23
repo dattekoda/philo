@@ -6,7 +6,7 @@ int	get_current_time(void)
 
 	if (gettimeofday(&tv, NULL) == -1)
 	{
-		ft_putstr_fd("failed to getimeofday\n", STDERR_FILENO);
+		ft_putstr_fd("failed to gettimeofday\n", STDERR_FILENO);
 		return (-1);
 	}
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);

@@ -30,6 +30,7 @@ bool	do_eat(t_philo *philo)
 	if (get_last_time_to_eat(philo) == false)
 		return (false);
 	ft_usleep(philo->common->time_to_eat * 1000);
+	philo->count_to_eat++;
 	if (philo->count_to_eat == \
 	philo->common->number_of_times_each_philosopher_must_eat)
 	{

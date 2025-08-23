@@ -23,11 +23,12 @@ bool	is_died(t_philo *philo)
 static bool	is_someone_dead(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->common->death_flag_mutex);
-	if (philo->common->death_flag)
-		return (pthread_mutex_unlock(&philo->common->death_flag_mutex), false);
+	if (philo->common->death_flag == true)
+		return (pthread_mutex_unlock(&philo->common->death_flag_mutex), true);
 	return (pthread_mutex_unlock(&philo->common->death_flag_mutex), false);
 }
 
+// why is this func not static?
 bool	is_everyone_full(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->common->full_count_mutex);

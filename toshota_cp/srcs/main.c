@@ -9,5 +9,5 @@ int	main(int argc, char *argv[])
 	philo = get_philo(argc, argv);
 	if (philo == NULL)
 		return (1);
-	end_philo(philo);
+	end_philo(philo); // It gets philo for only free and destroy.
 }

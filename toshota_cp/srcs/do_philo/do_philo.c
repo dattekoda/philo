@@ -16,7 +16,7 @@ void	*do_philo(t_philo *philo)
 		if (do_take_a_fork(philo) == false)
 			break ;
 		if (do_eat(philo) == false)
-			break ;
+			return (NULL) ;
 		if (is_died(philo) || is_end(philo))
 			break ;
 		do_sleep(philo);

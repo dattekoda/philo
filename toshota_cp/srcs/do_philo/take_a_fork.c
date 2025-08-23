@@ -1,6 +1,6 @@
 #include "philo_func.h"
 
-static void	set_fork_id_debending_on_philo_nb(t_philo *philo, \
+static void	set_fork_id_depending_on_philo_nb(t_philo *philo, \
 int	*dominant_side_fork_id, int *non_dominant_side_fork_id)
 {
 	*dominant_side_fork_id = philo->left_fork_id;
@@ -22,12 +22,13 @@ void	put_forks(t_philo *philo)
 	pthread_mutex_unlock(&philo->common->fork_mutex[philo->left_fork_id]);
 }
 
+// should be renamed "do_take_forks" or be devided
 bool	do_take_a_fork(t_philo *philo)
 {
 	int	dominant_side_fork_id;
 	int	non_dominant_side_fork_id;
 
-	set_fork_id_debending_on_philo_nb \
+	set_fork_id_depending_on_philo_nb \
 	(philo, &dominant_side_fork_id, &non_dominant_side_fork_id);
 	take_one_fork(philo, dominant_side_fork_id);
 	if (is_died(philo))

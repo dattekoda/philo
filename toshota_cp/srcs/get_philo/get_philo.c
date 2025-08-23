@@ -18,4 +18,12 @@ t_philo *get_philo(int argc, char **argv)
 	t_philo	*philo;
 
 	philo = init_philo(argc, argv);
+	if (philo == NULL)
+		return (NULL);
+	if (init_all_mutex(philo) == false)
+		return (free(philo->common->fork), free(philo->common), free(philo),
+			NULL);
+	if (all_pthread_create(philo) == false)
+		return (free_philo(philo), NULL);
+	return (philo);
 }

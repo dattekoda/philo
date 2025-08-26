@@ -6,11 +6,11 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:48:24 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/19 11:36:05 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/26 16:20:22 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "trash.h"
 
 void	ft_swap(int *a, int *b)
 {

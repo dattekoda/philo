@@ -1,4 +1,4 @@
-#include "../incs/philo.h"
+#include "../incs/trash.h"
 
 void *my_thread_func(void *arg)
 {

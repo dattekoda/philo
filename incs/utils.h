@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   err.c                                              :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/18 11:10:47 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/26 16:20:22 by khanadat         ###   ########.fr       */
+/*   Created: 2025/08/26 16:23:33 by khanadat          #+#    #+#             */
+/*   Updated: 2025/08/26 16:25:35 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "trash.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-void	exit_philo(t_philo *philo, char *str)
+# include <stdint.h>
+
+int64_t	ft_atol(const char *str)
 {
-	int	i;
-
-	i = -1;
-	while (++i < philo->data->num_philo)
-		pthread_mutex_unlock(&philo->mutex->fork_mutex[i]);
-	i = -1;
-	while (++i < philo->data->num_philo)
-		pthread_mutex_destroy(&philo->mutex->fork_mutex[i]);
-	if (str)
-		ft_putendl_err(str);
-	exit(FAILURE);
+	
 }
+
+#endif

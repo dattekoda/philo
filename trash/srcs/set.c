@@ -6,11 +6,11 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:49:22 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/19 10:37:34 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/26 16:20:22 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "trash.h"
 
 // set data from arg and set mutex
 int	set_data(int argc, char **argv, t_data *data)

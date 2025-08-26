@@ -6,11 +6,11 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 14:56:26 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/19 16:18:43 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/26 16:20:22 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "trash.h"
 
 int	is_end(t_philo *ph)
 {

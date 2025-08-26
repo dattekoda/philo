@@ -6,11 +6,11 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 14:17:22 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/19 11:55:02 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/26 16:20:22 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "trash.h"
 
 int	get_time_in_ms(void)
 {

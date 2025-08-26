@@ -6,11 +6,11 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 17:50:55 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/19 16:16:41 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/26 16:20:22 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "trash.h"
 
 void	update_eat(t_philo *ph)
 {

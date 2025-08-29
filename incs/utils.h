@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:23:33 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/26 16:25:35 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/28 19:51:52 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 
 # include <stdint.h>
 
-int64_t	ft_atol(const char *str)
-{
-	
-}
+int64_t	ft_ato64(const char *str);
+void	*ft_calloc(size_t count, size_t size);
+void	msg_err(const char *msg);
+void	msg_usage(const char *func);
+void	msg_function_err(const char *func);
 
 #endif

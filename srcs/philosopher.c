@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philosopher.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/26 16:17:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/28 17:12:53 by khanadat         ###   ########.fr       */
+/*   Created: 2025/08/28 17:13:42 by khanadat          #+#    #+#             */
+/*   Updated: 2025/08/28 18:32:17 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+int	philosopher(t_arg *arg)
 {
-	t_arg	arg;
+	t_data	data;
 
-	if (init_arg(argc, argv, &arg))
-		return (FAILURE);
-	if (philopher(&arg))
-		return (FAILURE);
-	return (SUCCESS);
+	if (init_data(data, arg))
+		return (ERR);
 }

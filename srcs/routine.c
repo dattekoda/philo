@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/26 16:23:33 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/30 12:21:21 by khanadat         ###   ########.fr       */
+/*   Created: 2025/08/30 12:25:42 by khanadat          #+#    #+#             */
+/*   Updated: 2025/08/30 12:32:39 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "routine.h"
 
-# include "define.h"
-# include <stdint.h>
-# include <stddef.h>
+int	routine(t_philo *philo)
+{
+	int	num;
+	int	i;
 
-// free.c
-void	free_data(t_data *data);
-
-// utils.c
-int64_t	ft_ato64(const char *str);
-void	*ft_calloc(size_t count, size_t size);
-int		locked_printf(t_philo *philo, char *msg);
-
-// msg.c
-void	msg_err(const char *msg);
-void	msg_usage_err(const char *func);
-void	msg_function_err(const char *func);
-
-#endif
+	num = philo->data->arg->number_of_philosophers;
+	i = -1;
+	while (++i < num)
+	{
+		
+	}
+}

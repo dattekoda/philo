@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/26 16:23:33 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/30 12:21:21 by khanadat         ###   ########.fr       */
+/*   Created: 2025/08/30 11:19:19 by khanadat          #+#    #+#             */
+/*   Updated: 2025/08/30 12:19:00 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "define.h"
+#include "utils.h"
 
-# include "define.h"
-# include <stdint.h>
-# include <stddef.h>
+void	safe_destroy(pthread_mutex_t *mutex)
+{
+	if (!mutex)
+		return ;
+	if (pthread_mutex_destroy(mutex))
+	{
+		msg_function_err(ERR_MSG_DESTROY);
+		return ;
+	}
+	free(mutex);
+}
 
-// free.c
-void	free_data(t_data *data);
-
-// utils.c
-int64_t	ft_ato64(const char *str);
-void	*ft_calloc(size_t count, size_t size);
-int		locked_printf(t_philo *philo, char *msg);
-
-// msg.c
-void	msg_err(const char *msg);
-void	msg_usage_err(const char *func);
-void	msg_function_err(const char *func);
-
-#endif
+void	free_data(t_data *data)
+{
+	if (data->fork_state)
+		free(data->fork_state);
+	safe_destroy(data->mutex);
+	safe_destroy(data->printf_mutex);
+	safe_destroy(data->fork_mutex);
+}

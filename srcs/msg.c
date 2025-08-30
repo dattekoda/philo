@@ -1,33 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   msg.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/26 16:23:33 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/30 12:21:21 by khanadat         ###   ########.fr       */
+/*   Created: 2025/08/30 11:54:09 by khanadat          #+#    #+#             */
+/*   Updated: 2025/08/30 11:57:02 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "define.h"
+#include <unistd.h>
 
-# include "define.h"
-# include <stdint.h>
-# include <stddef.h>
+void	msg_err(const char *msg)
+{
+	size_t	len;
 
-// free.c
-void	free_data(t_data *data);
+	len = 0;
+	while (msg[len])
+		len++;
+	write(STDERR_FILENO, msg, len);
+}
 
-// utils.c
-int64_t	ft_ato64(const char *str);
-void	*ft_calloc(size_t count, size_t size);
-int		locked_printf(t_philo *philo, char *msg);
+void	msg_usage_err(const char *func)
+{
+	msg_err(ERR_MSG_INVALID);
+	msg_err(ERR_MSG_USAGE);
+	msg_err(func);
+	msg_err(ERR_MSG_ARGUMENTS);
+}
 
-// msg.c
-void	msg_err(const char *msg);
-void	msg_usage_err(const char *func);
-void	msg_function_err(const char *func);
-
-#endif
+void	msg_function_err(const char *func)
+{
+	msg_err("Error: ");
+	msg_err(func);
+	msg_err(" failed\n");
+}

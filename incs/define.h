@@ -6,18 +6,15 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:54:36 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/28 19:50:43 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/30 12:20:21 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINE_H
 # define DEFINE_H
 
-# include <pthread.h>
-# include <unistd.h>
-# include <sys/time.h>
 # include <stdint.h>
-# include <stdlib.h>
+# include <pthread.h>
 # include <stdbool.h>
 
 # define ERR -1
@@ -42,6 +39,14 @@
 "[number_of_times_each_philosopher_must_eat] > 0\n"
 # define ERR_MSG_INIT "pthread_mutex_init"
 # define ERR_MSG_MALLOC "malloc"
+# define ERR_MSG_LOCK "pthread_mutex_lock"
+# define ERR_MSG_UNLOCK "pthread_mutex_unlock"
+# define ERR_MSG_DESTROY "pthread_mutex_destroy"
+
+# define MSG_DIE "died"
+# define MSG_EAT "is eating"
+# define MSG_SLEEP "is sleeping"
+# define MSG_THINK "is thinking"
 
 typedef struct s_arg
 {
@@ -54,9 +59,23 @@ typedef struct s_arg
 
 typedef struct s_data
 {
-	bool			*fork;
+	int64_t			start_ms;
+	int64_t			now_ms;
+	bool			someone_dead;
+	bool			*fork_state;
 	pthread_mutex_t	*mutex;
+	pthread_mutex_t	*printf_mutex;
+	pthread_mutex_t	*fork_mutex;
 	t_arg			*arg;
 }	t_data;
+
+typedef struct s_philo
+{
+	int				idx;
+	bool			dead;
+	int				eat_count;
+	int64_t			last_time_to_eat;
+	t_data			*data;
+}	t_philo;
 
 #endif

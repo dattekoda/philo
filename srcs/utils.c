@@ -6,15 +6,18 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/28 19:55:53 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/08/30 12:16:39 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include "define.h"
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <limits.h>
+#include <stdio.h>
+#include <inttypes.h>
 
 int64_t	ft_ato64(const char *s)
 {
@@ -45,29 +48,22 @@ void	*ft_calloc(size_t count, size_t size)
 	return (cal);
 }
 
-void	msg_err(const char *msg)
+int	locked_printf(t_philo *philo, char *msg)
 {
-	size_t	len;
-
-	len = 0;
-	while (msg[len])
-		len++;
-	write(STDERR_FILENO, msg, len);
+	if (pthread_mutex_lock(philo->data->printf_mutex))
+		return (msg_function_err(ERR_MSG_LOCK), ERR);
+	printf("%" PRId64 " %d %s\n", philo->data->now_ms, philo->idx, msg);
+	if (pthread_mutex_unlock(philo->data->printf_mutex))
+		return (msg_function_err(ERR_MSG_UNLOCK), ERR);
+	return (SUCCESS);
 }
 
-void	msg_usage(const char *func)
+int	main(void)
 {
-	msg_err(ERR_MSG_INVALID);
-	msg_err(ERR_MSG_USAGE);
-	msg_err(func);
-	msg_err(ERR_MSG_ARGUMENTS);
-}
+	int64_t	a = 616926112837;
 
-void	msg_function_err(const char *func)
-{
-	msg_err("Error: ");
-	msg_err(func);
-	msg_err(" failed\n");
+	printf("%" PRId64 " %d %s\n", a, 10, MSG_DIE);
+	return (0);
 }
 
 // #include <stdio.h>

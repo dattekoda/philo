@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:54:36 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/30 12:20:21 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/03 15:51:36 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@ typedef struct s_arg
 
 typedef struct s_data
 {
+	int				created;
 	int64_t			start_ms;
 	int64_t			now_ms;
 	bool			someone_dead;
 	bool			*fork_state;
-	pthread_mutex_t	*mutex;
+	pthread_mutex_t	*data_mutex;
 	pthread_mutex_t	*printf_mutex;
 	pthread_mutex_t	*fork_mutex;
-	t_arg			*arg;
 }	t_data;
 
 typedef struct s_philo
@@ -76,6 +76,7 @@ typedef struct s_philo
 	int				eat_count;
 	int64_t			last_time_to_eat;
 	t_data			*data;
+	t_arg			*arg;
 }	t_philo;
 
 #endif

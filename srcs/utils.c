@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/30 12:16:39 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/03 17:07:19 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <inttypes.h>
+#include <sys/time.h>
 
 int64_t	ft_ato64(const char *s)
 {
@@ -58,13 +59,59 @@ int	locked_printf(t_philo *philo, char *msg)
 	return (SUCCESS);
 }
 
-int	main(void)
+// success 0 error -1
+// set time gettimeofday got
+int	get_useconds_time(uint64_t *time)
 {
-	int64_t	a = 616926112837;
+	struct timeval	tv;
 
-	printf("%" PRId64 " %d %s\n", a, 10, MSG_DIE);
-	return (0);
+	if (gettimeofday(&tv, NULL))
+		return (ERR);
+	*time = tv.tv_sec * 1000000 + tv.tv_usec;
+	return (SUCCESS);
 }
+
+// success 0 error -1
+int	safe_usleep(uint64_t time)
+{
+	struct timeval	tv;
+	uint64_t		start;
+	uint64_t		now;
+
+	if (get_useconds_time(&start))
+		return (ERR);
+	now = start;
+	while (now < start + time)
+	{
+		if (usleep(100) || get_useconds_time(&now))
+			return (ERR);
+	}
+	return (SUCCESS);
+}
+
+int	main(void) {
+	uint64_t	start;
+	uint64_t	end;
+	uint64_t	howlong = 1000000;
+	for (int i = 0; i < 10; i++)
+	{
+		get_useconds_time(&start);
+		printf("test%d\n", i);
+		// printf("%lu\n", start);
+		safe_usleep(howlong);
+		get_useconds_time(&end);
+		// printf("%lu\n", end);
+		printf("ideal %lu, real %lu\n", howlong, end - start);
+	}
+}
+
+// int	main(void)
+// {
+// 	int64_t	a = 616926112837;
+
+// 	printf("%" PRId64 " %d %s\n", a, 10, MSG_DIE);
+// 	return (0);
+// }
 
 // #include <stdio.h>
 // int	main(int ac, char **av)

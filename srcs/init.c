@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:05:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/30 12:09:16 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/03 15:51:43 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <string.h>
 
 static int	validate_arg(int argc, t_arg *arg);
+static int	safe_init(pthread_mutex_t *mutex, size_t count);
 
 int	init_arg(int argc, char **argv, t_arg *arg)
 {
@@ -48,7 +49,7 @@ static int	validate_arg(int argc, t_arg *arg)
 	return (SUCCESS);
 }
 
-int	safe_init(pthread_mutex_t *mutex, size_t count)
+static int	safe_init(pthread_mutex_t *mutex, size_t count)
 {
 	mutex = ft_calloc(sizeof(pthread_mutex_t), count);
 	if (!mutex)
@@ -61,8 +62,7 @@ int	safe_init(pthread_mutex_t *mutex, size_t count)
 int	init_data(t_data *data, t_arg *arg)
 {
 	memset(data, 0, sizeof(t_data));
-	data->arg = arg;
-	if (safe_init(data->mutex, 1))
+	if (safe_init(data->data_mutex, 1))
 		return (ERR);
 	if (safe_init(data->printf_mutex, 1))
 		return (free_data(data), ERR);
@@ -74,18 +74,19 @@ int	init_data(t_data *data, t_arg *arg)
 	return (SUCCESS);
 }
 
-int	init_philo(t_philo **philo, t_data *data)
+int	init_philo(t_philo **philo, t_data *data, t_arg *arg)
 {
 	size_t	i;
 
-	*philo = malloc(sizeof(t_philo) * data->arg->number_of_philosophers);
+	*philo = malloc(sizeof(t_philo) * arg->number_of_philosophers);
 	if (!*philo)
 		return (msg_function_err(ERR_MSG_MALLOC), ERR);
 	i = -1;
-	while (++i < data->arg->number_of_philosophers)
+	while (++i < arg->number_of_philosophers)
 	{
 		memset(philo[i], 0, sizeof(t_philo));
 		philo[i]->idx = i + 1;
 		philo[i]->data = data;
+		philo[i]->arg = arg;
 	}
 }

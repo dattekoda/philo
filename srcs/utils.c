@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/03 17:07:19 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/04 22:43:10 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,13 @@ void	*ft_calloc(size_t count, size_t size)
 	return (cal);
 }
 
-int	locked_printf(t_philo *philo, char *msg)
+int	safe_printf(t_philo *philo, char *msg)
 {
 	if (pthread_mutex_lock(philo->data->printf_mutex))
 		return (msg_function_err(ERR_MSG_LOCK), ERR);
-	printf("%" PRId64 " %d %s\n", philo->data->now_ms, philo->idx, msg);
+	if (printf("%" PRId64 " %d %s\n", philo->data->now_ms, philo->idx, msg) < 0)
+		return (msg_function_err(ERR_MSG_PRINTF), \
+		pthread_mutex_unlock(philo->data->printf_mutex), ERR);
 	if (pthread_mutex_unlock(philo->data->printf_mutex))
 		return (msg_function_err(ERR_MSG_UNLOCK), ERR);
 	return (SUCCESS);
@@ -89,21 +91,21 @@ int	safe_usleep(uint64_t time)
 	return (SUCCESS);
 }
 
-int	main(void) {
-	uint64_t	start;
-	uint64_t	end;
-	uint64_t	howlong = 1000000;
-	for (int i = 0; i < 10; i++)
-	{
-		get_useconds_time(&start);
-		printf("test%d\n", i);
-		// printf("%lu\n", start);
-		safe_usleep(howlong);
-		get_useconds_time(&end);
-		// printf("%lu\n", end);
-		printf("ideal %lu, real %lu\n", howlong, end - start);
-	}
-}
+// int	main(void) {
+// 	uint64_t	start;
+// 	uint64_t	end;
+// 	uint64_t	howlong = 1000000;
+// 	for (int i = 0; i < 10; i++)
+// 	{
+// 		get_useconds_time(&start);
+// 		printf("test%d\n", i);
+// 		// printf("%lu\n", start);
+// 		safe_usleep(howlong);
+// 		get_useconds_time(&end);
+// 		// printf("%lu\n", end);
+// 		printf("ideal %lu, real %lu\n", howlong, end - start);
+// 	}
+// }
 
 // int	main(void)
 // {

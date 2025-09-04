@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:23:33 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/30 12:21:21 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/04 22:36:49 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ void	free_data(t_data *data);
 // utils.c
 int64_t	ft_ato64(const char *str);
 void	*ft_calloc(size_t count, size_t size);
-int		locked_printf(t_philo *philo, char *msg);
+int		safe_printf(t_philo *philo, char *msg);
+int 	get_useconds_time(uint64_t *time);
+int	    safe_usleep(uint64_t time);
 
 // msg.c
 void	msg_err(const char *msg);

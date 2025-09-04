@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 11:19:19 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/30 12:19:00 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/04 22:33:13 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	free_data(t_data *data)
 {
 	if (data->fork_state)
 		free(data->fork_state);
-	safe_destroy(data->mutex);
+	safe_destroy(data->data_mutex);
 	safe_destroy(data->printf_mutex);
 	safe_destroy(data->fork_mutex);
 }

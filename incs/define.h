@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:54:36 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/03 15:51:36 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/04 22:55:55 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@
 # define ERR_MSG_LOCK "pthread_mutex_lock"
 # define ERR_MSG_UNLOCK "pthread_mutex_unlock"
 # define ERR_MSG_DESTROY "pthread_mutex_destroy"
-
+# define ERR_MSG_PRINTF "printf"
 # define MSG_DIE "died"
 # define MSG_EAT "is eating"
 # define MSG_SLEEP "is sleeping"
 # define MSG_THINK "is thinking"
+# define MSG_FORK " has taken a fork"
 
 typedef struct s_arg
 {
@@ -63,7 +64,6 @@ typedef struct s_data
 	int64_t			start_ms;
 	int64_t			now_ms;
 	bool			someone_dead;
-	bool			*fork_state;
 	pthread_mutex_t	*data_mutex;
 	pthread_mutex_t	*printf_mutex;
 	pthread_mutex_t	*fork_mutex;

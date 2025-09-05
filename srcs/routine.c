@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 12:25:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 02:50:36 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 06:34:26 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	*routine(void *arg)
 		return (set_err_flag(philo->data), NULL);
 	while (1)
 	{
+		if (check_if_end(philo))
+			break ;
 		if (do_eat(philo) || philo->data->err_flag)
 			return (set_err_flag(philo->data), NULL);
 		if (check_if_end(philo))
@@ -47,13 +49,13 @@ void	*routine(void *arg)
 static int	wait_until_all_threads_created(t_philo *philo)
 {
 	if (pthread_mutex_lock(philo->data->data_mutex))
-		return (ERR);
+		return (msg_function_err(ERR_MSG_LOCK),  ERR);
 	philo->data->created++;
 	if (get_milliseconds_time(&philo->data->start_ms))
 		return (pthread_mutex_unlock(philo->data->data_mutex), ERR);
 	philo->data->now_ms = 0;
 	if (pthread_mutex_unlock(philo->data->data_mutex))
-		return (ERR);
+		return (msg_function_err(ERR_MSG_UNLOCK), ERR);
 	while (1)
 	{
 		if (philo->data->created == philo->arg->number_of_philosophers)
@@ -96,6 +98,8 @@ static int	do_sleep(t_philo *philo)
 static int	do_think(t_philo *philo)
 {
 	if (safe_printf(philo, MSG_SLEEP))
+		return (ERR);
+	if (update_dead_flag(philo))
 		return (ERR);
 	return (SUCCESS);
 }

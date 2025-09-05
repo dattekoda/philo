@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 02:53:47 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 06:39:32 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,17 @@ int	update_time_since_start(t_philo *philo, uint64_t *time)
 // update now_ms and printf philo's action.
 int	safe_printf(t_philo *philo, char *msg)
 {
-	if (pthread_mutex_lock(philo->data->data_mutex))
-		return (msg_function_err(ERR_MSG_LOCK), ERR);
+	pthread_mutex_lock(philo->data->data_mutex);
 	if (update_time_since_start(philo, &philo->data->now_ms))
 		return (pthread_mutex_unlock(philo->data->data_mutex), ERR);
 	if (!ft_strcmp(msg, MSG_EAT))
 		philo->last_time_to_eat = philo->data->now_ms;
-	if (pthread_mutex_unlock(philo->data->data_mutex))
-		return (msg_function_err(ERR_MSG_UNLOCK), ERR);
-	if (pthread_mutex_lock(philo->data->printf_mutex))
-		return (msg_function_err(ERR_MSG_LOCK), ERR);
+	pthread_mutex_unlock(philo->data->data_mutex);
+	pthread_mutex_lock(philo->data->printf_mutex);
 	if (printf("%" PRId64 " %d %s\n", philo->data->now_ms, philo->idx + 1, msg) < 0)
 		return (msg_function_err(ERR_MSG_PRINTF), \
 		pthread_mutex_unlock(philo->data->printf_mutex), ERR);
-	if (pthread_mutex_unlock(philo->data->printf_mutex))
-		return (msg_function_err(ERR_MSG_UNLOCK), ERR);
+	pthread_mutex_unlock(philo->data->printf_mutex);
 	return (SUCCESS);
 }
 

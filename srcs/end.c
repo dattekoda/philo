@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:00:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 03:12:54 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 06:14:08 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	set_err_flag(t_data *data)
 
 int	update_dead_flag(t_philo *philo)
 {
-	if (pthread_mutex_lock())
 	if (philo->arg->time_to_die + philo->last_time_to_eat > philo->data->now_ms \
 		|| philo->data->someone_dead)
 		return (SUCCESS);

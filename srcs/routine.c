@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 12:25:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/04 22:59:40 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/05 15:40:18 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ int	wait_until_all_threads_created(t_philo *philo)
 	if (pthread_mutex_lock(philo->data->data_mutex))
 		return (ERR);
 	philo->data->created++;
-	if (get_usedonds_time(&philo->data->now_ms))
+	if (get_millisedonds_time(&philo->data->start_ms))
 		return (pthread_mutex_unlock(philo->data->data_mutex), ERR);
+	philo->data->now_ms = philo->data->start_ms;
 	if (pthread_mutex_unlock(philo->data->data_mutex))
 		return (ERR);
 	while (1)
@@ -30,6 +31,15 @@ int	wait_until_all_threads_created(t_philo *philo)
 			return (ERR);
 	}
 	return (SUCCESS);
+}
+
+int	is_odd(t_philo *philo)
+{
+	if (philo->idx % 2 == 1)
+	{
+		if (safe_usleep(philo->arg->time_to_eat * 500))
+			return (ERR);
+	}
 }
 
 int	do_eat(t_philo *philo)
@@ -49,6 +59,7 @@ int	do_eat(t_philo *philo)
 		return (pthread_mutex_unlock(right), pthread_mutex_unlock(left), ERR);
 	if (safe_printf(philo, MSG_EAT))
 		return (pthread_mutex_unlock(right), pthread_mutex_unlock(left), ERR);
+	philo->eat_count++;
 	if (pthread_mutex_unlock(left))
 		return (pthread_mutex_unlock(right), ERR);
 	if (pthread_mutex_unlock(right))
@@ -63,9 +74,12 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	if (wait_until_all_threads_created(philo))
 		return (NULL);
+	if (is_odd(philo))
+		return (NULL);
 	while (1)
 	{
 		if (do_eat(philo))
 			return (NULL);
+		if (check_if_end())
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/04 22:43:10 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/05 15:41:05 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,40 +20,28 @@
 #include <inttypes.h>
 #include <sys/time.h>
 
-int64_t	ft_ato64(const char *s)
+int	update_time(t_philo *philo, uint64_t *time)
 {
-	uint64_t	num;
-	char		issigned;
-
-	num = 0;
-	issigned = 0;
-	while (*s == ' ' || ('\r' <= *s && *s <= '\t'))
-		s++;
-	if (*s == '-' || *s == '+')
-		issigned = (*s++ == '-');
-	while ('0' <= *s && *s <= '9')
-		num = num * 10 + (*s++ - '0');
-	return ((int64_t)((1 - 2 * issigned) * num));
+	if (get_milliseconds_time(time))
+		return (ERR);
+	*time = *time - philo->data->start_ms;
+	return (SUCCESS);
 }
 
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*cal;
-
-	if (count != 0 && SIZE_MAX / size < count)
-		return (NULL);
-	cal = malloc(count * size);
-	if (!cal)
-		return (NULL);
-	memset(cal, 0, count * size);
-	return (cal);
-}
-
+// update now_ms and printf philo's action.
 int	safe_printf(t_philo *philo, char *msg)
 {
+	if (pthread_mutex_lock(philo->data->data_mutex))
+		return (msg_function_err(ERR_MSG_LOCK), ERR);
+	if (update_time(philo, &philo->data->now_ms))
+		return (pthread_mutex_unlock(philo->data->data_mutex), ERR);
+	if (!ft_strcmp(msg, MSG_EAT))
+		philo->last_time_to_eat = philo->data->now_ms;
+	if (pthread_mutex_unlock(philo->data->data_mutex))
+		return (msg_function_err(ERR_MSG_UNLOCK), ERR);
 	if (pthread_mutex_lock(philo->data->printf_mutex))
 		return (msg_function_err(ERR_MSG_LOCK), ERR);
-	if (printf("%" PRId64 " %d %s\n", philo->data->now_ms, philo->idx, msg) < 0)
+	if (printf("%" PRId64 " %d %s\n", philo->data->now_ms, philo->idx + 1, msg) < 0)
 		return (msg_function_err(ERR_MSG_PRINTF), \
 		pthread_mutex_unlock(philo->data->printf_mutex), ERR);
 	if (pthread_mutex_unlock(philo->data->printf_mutex))
@@ -62,14 +50,14 @@ int	safe_printf(t_philo *philo, char *msg)
 }
 
 // success 0 error -1
-// set time gettimeofday got
-int	get_useconds_time(uint64_t *time)
+// set time gettimeofday got as ms
+int	get_milliseconds_time(uint64_t *time)
 {
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL))
-		return (ERR);
-	*time = tv.tv_sec * 1000000 + tv.tv_usec;
+		return (msg_function_err(ERR_MSG_GETTIMEOFDAY), ERR);
+	*time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	return (SUCCESS);
 }
 

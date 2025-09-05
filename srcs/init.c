@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:05:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/03 15:51:43 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/05 15:25:06 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	init_arg(int argc, char **argv, t_arg *arg)
 	arg->time_to_die = ft_ato64(argv[2]);
 	arg->time_to_eat = ft_ato64(argv[3]);
 	arg->time_to_sleep = ft_ato64(argv[4]);
-	arg->number_of_times_each_philosopher_must_eat = -1;
+	arg->number_of_times_each_philosopher_must_eat = NO_OPTION;
 	if (argc == OPTION_ARGC)
 		arg->number_of_times_each_philosopher_must_eat = (int)ft_ato64(argv[5]);
 	if (validate_arg(argc, arg))
@@ -66,9 +66,9 @@ int	init_data(t_data *data, t_arg *arg)
 		return (ERR);
 	if (safe_init(data->printf_mutex, 1))
 		return (free_data(data), ERR);
-	data->fork_state = ft_calloc(arg->number_of_philosophers, sizeof(bool));
-	if (!data->fork_state)
-		return (free_data(data), msg_function_err(ERR_MSG_MALLOC), ERR);
+	// data->fork_state = ft_calloc(arg->number_of_philosophers, sizeof(bool));
+	// if (!data->fork_state)
+	// 	return (free_data(data), msg_function_err(ERR_MSG_MALLOC), ERR);
 	if (safe_init(data->fork_mutex, arg->number_of_philosophers))
 		return (free_data(data), ERR);
 	return (SUCCESS);

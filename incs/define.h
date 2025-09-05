@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:54:36 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/05 22:43:02 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 00:39:37 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 " time_to_sleep" \
 " [number_of_times_each_philosopher_must_eat]\n"
 # define ERR_MSG_FORMAT "Invalid format of arguments.\n" \
+"all arguments should be number.\n" \
 "number_of_philosophers > 0\n" \
 "time_to_die > 1\n" \
 "time_to_eat > 1\n" \
@@ -50,6 +51,8 @@
 # define ERR_MSG_PRINTF "printf"
 # define ERR_MSG_GETTIMEOFDAY "gettimeofday"
 # define ERR_MSG_USLEEP "usleep"
+# define ERR_MSG_JOIN "pthread_join"
+# define ERR_MSG_CREATE "pthread_create"
 # define MSG_DIE "died"
 # define MSG_EAT "is eating"
 # define MSG_SLEEP "is sleeping"
@@ -59,9 +62,9 @@
 typedef struct s_arg
 {
 	int			number_of_philosophers;
-	int64_t		time_to_die;
-	int64_t		time_to_eat;
-	int64_t		time_to_sleep;
+	uint64_t	time_to_die;
+	uint64_t	time_to_eat;
+	uint64_t	time_to_sleep;
 	int			number_of_times_each_philosopher_must_eat;
 }	t_arg;
 
@@ -70,8 +73,8 @@ typedef struct s_data
 	int				created;
 	// check if all philos are over number_of_times_each_philosopher_must_eat
 	int				ended_nums;
-	int64_t			start_ms;
-	int64_t			now_ms;
+	uint64_t		start_ms;
+	uint64_t		now_ms;
 	bool			someone_dead;
 	bool			err_flag;
 	pthread_mutex_t	*data_mutex;

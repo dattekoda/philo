@@ -6,12 +6,13 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/05 21:04:26 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 00:15:51 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include "define.h"
+#include <unistd.h> // usleep
 #include <stdlib.h>
 #include <limits.h>
 #include <stdio.h>
@@ -33,7 +34,7 @@ int	safe_printf(t_philo *philo, char *msg)
 {
 	if (pthread_mutex_lock(philo->data->data_mutex))
 		return (msg_function_err(ERR_MSG_LOCK), ERR);
-	if (update_time(philo, &philo->data->now_ms))
+	if (update_time_since_start(philo, &philo->data->now_ms))
 		return (pthread_mutex_unlock(philo->data->data_mutex), ERR);
 	if (!ft_strcmp(msg, MSG_EAT))
 		philo->last_time_to_eat = philo->data->now_ms;
@@ -62,7 +63,6 @@ int	get_milliseconds_time(uint64_t *time)
 // success 0 error -1
 int	safe_usleep(uint64_t time)
 {
-	struct timeval	tv;
 	uint64_t		start;
 	uint64_t		now;
 
@@ -71,7 +71,7 @@ int	safe_usleep(uint64_t time)
 	now = start;
 	while (now < start + time)
 	{
-		if (usleep(1000))
+		if (usleep(100))
 			return (msg_function_err(ERR_MSG_USLEEP), ERR);
 		if (get_useconds_time(&now))
 			return (ERR);

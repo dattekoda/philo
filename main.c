@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:17:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/08/28 17:12:53 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 00:37:00 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	main(int argc, char **argv)
 {
 	t_arg	arg;
 
+	if (validate_arg(argc, argv))
+		return (FAILURE);
 	if (init_arg(argc, argv, &arg))
 		return (FAILURE);
 	if (philopher(&arg))

@@ -6,12 +6,13 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:00:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/05 22:37:39 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 00:12:48 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "define.h"
 #include "utils.h"
+#include <pthread.h>
 
 void	set_err_flag(t_data *data)
 {

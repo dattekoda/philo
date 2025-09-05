@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 12:25:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/05 22:51:19 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 00:16:40 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ void	*routine(void *arg)
 			break ;
 		if (do_think(philo) || philo->data->err_flag)
 			return (set_err_flag(philo->data), (int *)ERR);
-		if (check_if_end(philo))
-			break ;
 	}
 	return ((int *)SUCCESS);
 }
@@ -60,7 +58,7 @@ static int	wait_until_all_threads_created(t_philo *philo)
 	if (pthread_mutex_lock(philo->data->data_mutex))
 		return (ERR);
 	philo->data->created++;
-	if (get_millisedonds_time(&philo->data->start_ms))
+	if (get_milliseconds_time(&philo->data->start_ms))
 		return (pthread_mutex_unlock(philo->data->data_mutex), ERR);
 	philo->data->now_ms = philo->data->start_ms;
 	if (pthread_mutex_unlock(philo->data->data_mutex))
@@ -83,12 +81,22 @@ static int	do_sleep(t_philo *philo)
 		return (ERR);
 	if (safe_usleep(philo->arg->time_to_sleep * MS_TO_US))
 		return (ERR);
+	if (pthread_mutex_lock(philo->data->data_mutex))
+		return (msg_function_err(ERR_MSG_LOCK), ERR);
+	if (update_time_since_start(philo, &philo->data->now_ms))
+		return (pthread_mutex_unlock(philo->data->data_mutex), ERR);
+	if (pthread_mutex_unlock(philo->data->data_mutex))
+		return (msg_function_err(ERR_MSG_UNLOCK), ERR);
+	if (update_dead_flag(philo))
+		return (ERR);
 	return (SUCCESS);
 }
 
 static int	do_think(t_philo *philo)
 {
 	if (safe_printf(philo, MSG_SLEEP))
+		return (ERR);
+	if (update_dead_flag(philo))
 		return (ERR);
 	return (SUCCESS);
 }

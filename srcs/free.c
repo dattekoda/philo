@@ -6,12 +6,14 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 11:19:19 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/05 22:38:16 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 00:13:15 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "define.h"
 #include "utils.h"
+#include <stdlib.h>
+#include <pthread.h>
 
 static void	safe_destroy(pthread_mutex_t *mutex)
 {

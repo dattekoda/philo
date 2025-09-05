@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   ft.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/26 16:17:28 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 00:41:14 by khanadat         ###   ########.fr       */
+/*   Created: 2025/09/06 00:26:29 by khanadat          #+#    #+#             */
+/*   Updated: 2025/09/06 00:35:47 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef FT_H
+# define FT_H
 
-# include "define.h"
+# include <stdint.h>
+# include <stddef.h>
 
-// init.c
-int		validate_arg(int argc, char *argv[]);
-int		init_arg(int argc, char **argv, t_arg *arg);
-int		init_data(t_data *data, t_data *arg);
-int		init_philo(t_philo **philo, t_data *data);
-
-// philosopher.c
-int		philosopher(t_arg *arg);
-
-// routine.c
-void	*routine(void *arg);
+// ft.c
+int64_t	ft_ato64(const char *str);
+void	*ft_calloc(size_t count, size_t size);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

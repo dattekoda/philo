@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 00:15:51 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 02:53:47 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include <sys/time.h>
+#define US_TO_MS 1000
+#define S_TO_US 1000000
 
 static int	get_useconds_time(uint64_t *time);
 
@@ -56,7 +58,7 @@ int	get_milliseconds_time(uint64_t *time)
 {
 	if (get_useconds_time(time))
 		return (ERR);
-	*time *= 1000;
+	*time /= US_TO_MS;
 	return (SUCCESS);
 }
 
@@ -71,7 +73,7 @@ int	safe_usleep(uint64_t time)
 	now = start;
 	while (now < start + time)
 	{
-		if (usleep(100))
+		if (usleep(SHORT_TIME))
 			return (msg_function_err(ERR_MSG_USLEEP), ERR);
 		if (get_useconds_time(&now))
 			return (ERR);
@@ -85,7 +87,7 @@ static int	get_useconds_time(uint64_t *time)
 
 	if (gettimeofday(&tv, NULL))
 		return (msg_function_err(ERR_MSG_GETTIMEOFDAY), ERR);
-	*time = tv.tv_sec * 1000000 + tv.tv_usec;
+	*time = tv.tv_sec * S_TO_US + tv.tv_usec;
 	return (SUCCESS);
 }
 

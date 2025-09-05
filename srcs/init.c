@@ -6,15 +6,16 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:05:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 00:40:26 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 02:48:04 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "define.h"
 #include "utils.h"
 #include <string.h>
+#include <stdlib.h> // malloc
 
-static int	safe_init(pthread_mutex_t *mutex, size_t count);
+static int	safe_init(pthread_mutex_t **mutex, size_t count);
 
 int	validate_arg(int argc, char *argv[])
 {
@@ -46,46 +47,56 @@ int	init_arg(int argc, char **argv, t_arg *arg)
 	return (SUCCESS);
 }
 
-static int	safe_init(pthread_mutex_t *mutex, size_t count)
-{
-	mutex = ft_calloc(sizeof(pthread_mutex_t), count);
-	if (!mutex)
-		return (msg_function_err(ERR_MSG_MALLOC), ERR);
-	if (pthread_mutex_init(mutex, NULL))
-		return (msg_function_err(ERR_MSG_INIT), ERR);
-	return (SUCCESS);
-}
-
 int	init_data(t_data *data, t_arg *arg)
 {
 	memset(data, 0, sizeof(t_data));
-	if (safe_init(data->data_mutex, 1))
+	if (safe_init(&data->data_mutex, 1))
 		return (ERR);
-	if (safe_init(data->printf_mutex, 1))
+	if (safe_init(&data->printf_mutex, 1))
 		return (free_data(data), ERR);
 	// data->fork_state = ft_calloc(arg->number_of_philosophers, sizeof(bool));
 	// if (!data->fork_state)
 	// 	return (free_data(data), msg_function_err(ERR_MSG_MALLOC), ERR);
-	if (safe_init(data->fork_mutex, arg->number_of_philosophers))
+	if (safe_init(&data->fork_mutex, arg->number_of_philosophers))
 		return (free_data(data), ERR);
-	if (safe_init(data->err_mutex, 1))
+	if (safe_init(&data->err_mutex, 1))
 		return (free_data(data), 1);
 	return (SUCCESS);
 }
 
+// success 0 error -1
 int	init_philo(t_philo **philo, t_data *data, t_arg *arg)
 {
 	int	i;
 
-	*philo = malloc(sizeof(t_philo) * arg->number_of_philosophers);
+	*philo = ft_calloc(arg->number_of_philosophers, sizeof(t_philo));
 	if (!*philo)
 		return (msg_function_err(ERR_MSG_MALLOC), ERR);
 	i = -1;
 	while (++i < arg->number_of_philosophers)
 	{
-		memset(philo[i], 0, sizeof(t_philo));
-		philo[i]->idx = i + 1;
-		philo[i]->data = data;
-		philo[i]->arg = arg;
+		memset((*philo + i), 0, sizeof(t_philo));
+		(*philo + i)->idx = i;
+		(*philo + i)->data = data;
+		(*philo + i)->arg = arg;
+		(*philo + i)->left_fork_id = i;
+		(*philo + i)->right_fork_id = (i + 1) % arg->number_of_philosophers;
 	}
+	return (SUCCESS);
+}
+
+static int	safe_init(pthread_mutex_t **mutex, size_t count)
+{
+	size_t	i;
+
+	*mutex = ft_calloc(count, sizeof(pthread_mutex_t));
+	if (!*mutex)
+		return (msg_function_err(ERR_MSG_MALLOC), ERR);
+	i = -1;
+	while (++i < count)
+	{
+		if (pthread_mutex_init((*mutex + i), NULL))
+			return (msg_function_err(ERR_MSG_INIT), ERR);
+	}
+	return (SUCCESS);
 }

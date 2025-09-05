@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:54:36 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 00:39:37 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 02:53:57 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define OPTION_ARGC 6
 # define NO_OPTION -1
 # define MS_TO_US 1000
+# define SHORT_TIME 100
 
 # define ERR_MSG_USAGE "Usage: "
 # define ERR_MSG_INVALID "Invalid number of arguments.\n"
@@ -89,6 +90,8 @@ typedef struct s_philo
 	bool			dead;
 	int				eat_count;
 	bool			over_mustcount;
+	int				right_fork_id;
+	int				left_fork_id;
 	int64_t			last_time_to_eat;
 	t_data			*data;
 	t_arg			*arg;

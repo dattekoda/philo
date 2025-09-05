@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:17:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 00:37:00 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 01:19:00 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int argc, char **argv)
 		return (FAILURE);
 	if (init_arg(argc, argv, &arg))
 		return (FAILURE);
-	if (philopher(&arg))
+	if (philosopher(&arg))
 		return (FAILURE);
 	return (SUCCESS);
 }

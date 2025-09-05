@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 11:19:19 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 00:13:15 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 02:22:19 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ static void	safe_destroy(pthread_mutex_t *mutex)
 	if (!mutex)
 		return ;
 	if (pthread_mutex_destroy(mutex))
-	{
 		msg_function_err(ERR_MSG_DESTROY);
-		return ;
-	}
 	free(mutex);
 }
 

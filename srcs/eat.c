@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 16:25:19 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/05 22:45:11 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 03:14:27 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	do_eat(t_philo *philo)
 	pthread_mutex_t	*right;
 
 	right = philo->data->fork_mutex + philo->idx;
-	left = philo->data->fork_mutex + ((philo->idx + 1) % philo->idx);
+	left = philo->data->fork_mutex + ((philo->idx + 1) % philo->arg->number_of_philosophers);
 	if (pthread_mutex_lock(right))
 		return (ERR);
 	if (safe_printf(philo, MSG_FORK))
@@ -52,8 +52,8 @@ static int	update_over_mustcount(t_philo *philo)
 	int	must_eat;
 
 	must_eat = philo->arg->number_of_times_each_philosopher_must_eat;
-	if (must_eat == -1)
-		return (0);
+	if (must_eat == NO_OPTION)
+		return (SUCCESS);
 	if (!philo->over_mustcount && must_eat < philo->eat_count)
 	{
 		philo->over_mustcount = true;
@@ -63,5 +63,5 @@ static int	update_over_mustcount(t_philo *philo)
 		if (pthread_mutex_unlock(philo->data->data_mutex))
 			return (msg_function_err(ERR_MSG_UNLOCK), ERR);
 	}
-	return (0);
+	return (SUCCESS);
 }

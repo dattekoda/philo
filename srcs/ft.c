@@ -6,17 +6,20 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:33:24 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/05 15:40:45 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/05 21:05:36 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stddef.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 int64_t	ft_ato64(const char *s)
 {
+	bool		issigned;
 	uint64_t	num;
-	char		issigned;
 
 	num = 0;
 	issigned = 0;

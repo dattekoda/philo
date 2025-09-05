@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:13:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/03 15:23:09 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/05 22:22:59 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	philosopher(t_arg *arg)
 	t_philo		*philo;
 	pthread_t	*thread;
 	int			i;
+	int			ret;
 
 	if (init_data(&data, arg))
 		return (ERR);
@@ -33,6 +34,15 @@ int	philosopher(t_arg *arg)
 				pthread_join(thread + i, NULL);
 			return (free(thread), free(philo), free_data(&data), ERR);
 		}
+	}
+	i = 0;
+	while (1)
+	{
+		if (pthread_join(thread + i, &ret))
+			return (free(thread), free(philo), free_data(&data), ERR);
+		if (ret)
+			return (free(thread), free(philo), free_data(&data), ERR);
+		i = (i + 1) % arg->number_of_philosophers;
 	}
 	return (free(philo), free_data(&data), SUCCESS);
 }

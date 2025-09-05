@@ -6,21 +6,21 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/05 15:41:05 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/05 21:04:26 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include "define.h"
 #include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
 #include <limits.h>
 #include <stdio.h>
 #include <inttypes.h>
 #include <sys/time.h>
 
-int	update_time(t_philo *philo, uint64_t *time)
+static int	get_useconds_time(uint64_t *time);
+
+int	update_time_since_start(t_philo *philo, uint64_t *time)
 {
 	if (get_milliseconds_time(time))
 		return (ERR);
@@ -53,11 +53,9 @@ int	safe_printf(t_philo *philo, char *msg)
 // set time gettimeofday got as ms
 int	get_milliseconds_time(uint64_t *time)
 {
-	struct timeval	tv;
-
-	if (gettimeofday(&tv, NULL))
-		return (msg_function_err(ERR_MSG_GETTIMEOFDAY), ERR);
-	*time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	if (get_useconds_time(time))
+		return (ERR);
+	*time *= 1000;
 	return (SUCCESS);
 }
 
@@ -73,9 +71,21 @@ int	safe_usleep(uint64_t time)
 	now = start;
 	while (now < start + time)
 	{
-		if (usleep(100) || get_useconds_time(&now))
+		if (usleep(1000))
+			return (msg_function_err(ERR_MSG_USLEEP), ERR);
+		if (get_useconds_time(&now))
 			return (ERR);
 	}
+	return (SUCCESS);
+}
+
+static int	get_useconds_time(uint64_t *time)
+{
+	struct timeval	tv;
+
+	if (gettimeofday(&tv, NULL))
+		return (msg_function_err(ERR_MSG_GETTIMEOFDAY), ERR);
+	*time = tv.tv_sec * 1000000 + tv.tv_usec;
 	return (SUCCESS);
 }
 

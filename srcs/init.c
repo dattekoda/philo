@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:05:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/05 15:25:06 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/05 22:29:53 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ int	init_data(t_data *data, t_arg *arg)
 	// 	return (free_data(data), msg_function_err(ERR_MSG_MALLOC), ERR);
 	if (safe_init(data->fork_mutex, arg->number_of_philosophers))
 		return (free_data(data), ERR);
+	if (safe_init(data->err_mutex, 1))
+		return (free_data(data), 1);
 	return (SUCCESS);
 }
 

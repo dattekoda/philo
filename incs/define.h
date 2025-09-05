@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:54:36 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/05 15:51:02 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/05 22:43:02 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,13 @@
 # define SUCCESS 0
 # define FAILURE 1
 
+# define END 1
+# define NOT_END 0
+
 # define DEFAULT_ARGC 5
 # define OPTION_ARGC 6
 # define NO_OPTION -1
+# define MS_TO_US 1000
 
 # define ERR_MSG_USAGE "Usage: "
 # define ERR_MSG_INVALID "Invalid number of arguments.\n"
@@ -45,6 +49,7 @@
 # define ERR_MSG_DESTROY "pthread_mutex_destroy"
 # define ERR_MSG_PRINTF "printf"
 # define ERR_MSG_GETTIMEOFDAY "gettimeofday"
+# define ERR_MSG_USLEEP "usleep"
 # define MSG_DIE "died"
 # define MSG_EAT "is eating"
 # define MSG_SLEEP "is sleeping"
@@ -68,9 +73,11 @@ typedef struct s_data
 	int64_t			start_ms;
 	int64_t			now_ms;
 	bool			someone_dead;
+	bool			err_flag;
 	pthread_mutex_t	*data_mutex;
 	pthread_mutex_t	*printf_mutex;
 	pthread_mutex_t	*fork_mutex;
+	pthread_mutex_t	*err_mutex;
 }	t_data;
 
 typedef struct s_philo

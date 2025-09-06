@@ -6,12 +6,13 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 16:25:19 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 02:48:12 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 07:52:40 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "end.h"
 #include "define.h"
+#include "end.h"
+#include "msg.h"
 #include "utils.h"
 
 static int	update_eat(t_philo *philo);

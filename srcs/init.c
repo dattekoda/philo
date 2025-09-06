@@ -6,11 +6,12 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:05:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 05:42:41 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 07:20:54 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "define.h"
+#include "msg.h"
 #include "utils.h"
 #include <string.h>
 #include <stdlib.h> // malloc
@@ -33,7 +34,7 @@ int	init_arg(int argc, char **argv, t_arg *arg)
 int	init_data(t_data *data, t_arg *arg)
 {
 	memset(data, 0, sizeof(t_data));
-	data->monitor_size = arg->number_of_philosophers / PER_PHILO_NUM + 1;
+	data->monitor_size = (arg->number_of_philosophers - 1) / PER_PHILO_NUM + 1;
 	data->thread_size = arg->number_of_philosophers + data->monitor_size;
 	if (safe_init(&data->data_mutex, 1))
 		return (ERR);
@@ -66,7 +67,8 @@ int	init_philo(t_philo **philo, t_data *data, t_arg *arg)
 		if (i % 2 == 1)
 		{
 			(*philo + i)->first_fork_id = i;
-			(*philo + i)->second_fork_id = (i + 1) % arg->number_of_philosophers;
+			(*philo + i)->second_fork_id = (i + 1) \
+			% arg->number_of_philosophers;
 		}
 		else
 		{
@@ -88,11 +90,11 @@ int	init_monitor(t_monitor **monitor, t_philo *philo, t_data *data)
 	while (++i < data->monitor_size)
 	{
 		(*monitor + i)->idx = i;
-		if (i != data->monitor_size)
+		if (i != data->monitor_size - 1)
 			(*monitor + i)->num_player = PER_PHILO_NUM;
 		else
 			(*monitor + i)->num_player \
-				= philo->arg->number_of_philosophers % PER_PHILO_NUM;
+				= (philo->arg->number_of_philosophers - 1) % PER_PHILO_NUM + 1;
 		(*monitor + i)->player = philo + PER_PHILO_NUM * i;
 		(*monitor + i)->data = data;
 	}

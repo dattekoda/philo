@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:54:36 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 05:43:05 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 07:34:55 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define NO_OPTION -1
 # define MS_TO_US 1000
 # define SHORT_TIME 100
-# define PER_PHILO_NUM 50
+# define PER_PHILO_NUM 5 // monitors check this number of philo in each thread.
 
 # define ERR_MSG_USAGE "Usage: "
 # define ERR_MSG_INVALID "Invalid number of arguments.\n"

@@ -6,13 +6,13 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 05:45:00 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 06:46:21 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
 #include "define.h"
 #include "end.h"
+#include "msg.h"
 #include <unistd.h> // usleep
 #include <stdlib.h>
 #include <limits.h>
@@ -30,7 +30,7 @@ static int	get_useconds_time(uint64_t *time);
 int	safe_printf(t_philo *philo, char *msg)
 {
 	pthread_mutex_lock(philo->data->printf_mutex);
-	if (update_now_ms(philo->data) || philo->data->err_flag)
+	if (philo->data->err_flag)
 		return (pthread_mutex_unlock(philo->data->printf_mutex), ERR);
 	if (philo->data->end_flag)
 		return (pthread_mutex_unlock(philo->data->printf_mutex), SUCCESS);

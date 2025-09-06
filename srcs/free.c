@@ -6,11 +6,12 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 11:19:19 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 02:30:22 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 05:56:56 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "define.h"
+#include "msg.h"
 #include "utils.h"
 #include <stdlib.h>
 #include <pthread.h>

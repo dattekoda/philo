@@ -6,38 +6,48 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:13:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 05:46:03 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 07:34:42 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-#include "utils.h"
 #include "end.h"
+#include "msg.h"
+#include "philo.h"
+#include "routine.h"
+#include "utils.h"
 #include <stdlib.h> // free malloc
 
-static int	born_to_be_thread(t_philo *philo, t_arg *arg, pthread_t *thread);
-static void	monitor_philos(t_philo *philo, t_arg *arg, pthread_t * therad);
+static int	born_to_be_thread(t_philo *philo, t_arg *arg, \
+	pthread_t *thread, t_monitor *monitor);
+static int	monitor_thread(t_philo *philo, t_data *data, \
+	pthread_t *thread, t_monitor *monitor);
+static void	*routine_monitor(void *arg);
 
 int	philosopher(t_arg *arg)
 {
 	t_data		data;
 	t_philo		*philo;
 	pthread_t	*thread;
+	t_monitor	*monitor;
 
 	if (init_data(&data, arg))
 		return (ERR);
 	if (init_philo(&philo, &data, arg))
 		return (free_data(&data), ERR);
-	thread = malloc(sizeof(pthread_t) \
-		* (arg->number_of_philosophers + arg->monitor_size));
-	if (!thread)
+	if (init_monitor(&monitor, philo, &data))
 		return (free_data(&data), free(philo), ERR);
-	if (born_to_be_thread(philo, arg, thread))
-		return (free(thread), free_data(&data), free(philo), ERR);
-	return (free(thread), free(philo), free_data(&data), SUCCESS);
+	thread = ft_calloc(data.thread_size, sizeof(pthread_t));
+	if (!thread)
+		return (free_data(&data), free(philo), free(monitor), ERR);
+	if (born_to_be_thread(philo, arg, thread, monitor))
+		return (free(thread), free_data(&data), \
+		free(philo), free(monitor), ERR);
+	return (free(thread), free(philo), free_data(&data), \
+	free(monitor), SUCCESS);
 }
 
-static int	born_to_be_thread(t_philo *philo, t_arg *arg, pthread_t *thread)
+static int	born_to_be_thread(t_philo *philo, t_arg *arg, \
+	pthread_t *thread, t_monitor *monitor)
 {
 	int		i;
 
@@ -52,45 +62,43 @@ static int	born_to_be_thread(t_philo *philo, t_arg *arg, pthread_t *thread)
 			return (msg_function_err(ERR_MSG_CREATE), ERR);
 		}
 	}
-	if (monitor_philos(philo, arg, thread + arg->number_of_philosophers))
-		return (set_err_flag(philo->data->err_flag), ERR);
+	if (monitor_thread(philo, philo->data, \
+		thread + arg->number_of_philosophers, monitor))
+		return (set_err_flag(philo->data), ERR);
 	i = -1;
-	while (++i < arg->number_of_philosophers + arg->monitor_size)
-	{
+	while (++i < philo->data->thread_size)
 		if (pthread_join(*(thread + i), NULL))
 			return (msg_function_err(ERR_MSG_JOIN), ERR);
-	}
 	if (philo->data->err_flag)
 		return (ERR);
 	return (SUCCESS);
 }
 
-static int	monitor_philos(t_philo *philo, t_arg *arg, pthread_t *thread)
+static int	monitor_thread(t_philo *philo, t_data *data, \
+	pthread_t *thread, t_monitor *monitor)
 {
 	int			i;
-	t_monitor	*monitor;
 
-	if (init_monitor(&monitor, philo, arg))
-		return (ERR);
 	i = -1;
-	while (++i < philo->data->monitor_size)
+	while (++i < data->monitor_size)
 	{
 		if (pthread_create((thread + i), NULL, routine_monitor, monitor + i))
 		{
-			set_err_flag(philo->data);
-			while (0 < i--)
+			set_err_flag(data);
+			while (-philo->arg->number_of_philosophers < i--)
 				pthread_join(*(thread + i), NULL);
 			return (msg_function_err(ERR_MSG_CREATE), ERR);
 		}
 	}
+	return (SUCCESS);
 }
 
-void	*routine_monitor(void *arg)
+static void	*routine_monitor(void *arg)
 {
 	int			i;
 	t_monitor	*monitor;
 
-	monitor = (t_monitor *)monitor;
+	monitor = (t_monitor *)arg;
 	if (wait_until_all_threads_created(monitor->data))
 		return (set_err_flag(monitor->data), NULL);
 	while (1)
@@ -99,8 +107,9 @@ void	*routine_monitor(void *arg)
 		while (++i < monitor->num_player)
 			if (check_if_end(monitor->player + i))
 				return (NULL);
-		if (monitor->data->err_flag \
+		if (monitor->data->end_flag || monitor->data->err_flag \
 			|| safe_usleep(SHORT_TIME, monitor->data))
 			return (NULL);
 	}
+	return (NULL);
 }

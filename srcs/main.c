@@ -6,10 +6,12 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:17:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 03:19:40 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 05:59:10 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft.h"
+#include "msg.h"
 #include "philo.h"
 
 static int	validate_arg(int argc, char *argv[]);

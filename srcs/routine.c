@@ -6,14 +6,16 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 12:25:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 05:41:51 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 06:49:13 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "end.h"
+#include "msg.h"
 #include "routine.h"
 #include "utils.h"
 #define HALF_TIME 500
+
 static int	is_even(t_philo *philo);
 static int	do_sleep(t_philo *philo);
 static int	do_think(t_philo *philo);
@@ -57,7 +59,7 @@ int	wait_until_all_threads_created(t_data *data)
 	pthread_mutex_unlock(data->data_mutex);
 	while (1)
 	{
-		if (data->created == data->monitor_size)
+		if (data->created == data->thread_size)
 			break ;
 		if (safe_usleep(SHORT_TIME, data))
 			return (ERR);

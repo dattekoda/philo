@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:54:36 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 02:53:57 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 17:26:25 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@
 # define MSG_EAT "is eating"
 # define MSG_SLEEP "is sleeping"
 # define MSG_THINK "is thinking"
-# define MSG_FORK " has taken a fork"
+# define MSG_FORK "has taken a fork"
 
 typedef struct s_arg
 {
@@ -82,6 +82,7 @@ typedef struct s_data
 	pthread_mutex_t	*printf_mutex;
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	*err_mutex;
+	pthread_mutex_t	*end_mutex;
 }	t_data;
 
 typedef struct s_philo

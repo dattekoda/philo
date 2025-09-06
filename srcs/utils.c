@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 06:39:32 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 19:38:48 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ int	safe_printf(t_philo *philo, char *msg)
 		philo->last_time_to_eat = philo->data->now_ms;
 	pthread_mutex_unlock(philo->data->data_mutex);
 	pthread_mutex_lock(philo->data->printf_mutex);
-	if (printf("%" PRId64 " %d %s\n", philo->data->now_ms, philo->idx + 1, msg) < 0)
+	if (check_if_end(philo))
+		return (pthread_mutex_unlock(philo->data->printf_mutex), SUCCESS);
+	if (printf("%"PRId64" %d %s\n", \
+		philo->data->now_ms, philo->idx + 1, msg) < 0)
 		return (msg_function_err(ERR_MSG_PRINTF), \
 		pthread_mutex_unlock(philo->data->printf_mutex), ERR);
 	pthread_mutex_unlock(philo->data->printf_mutex);

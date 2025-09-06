@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:13:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 03:03:03 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 19:37:56 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,3 @@ static int	born_to_be_thread(t_philo *philo, pthread_t *thread)
 		return (ERR);
 	return (SUCCESS);
 }
-
-// static int	monitor_philo(t_data *data, t_arg *arg)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (1)
-// 	{
-// 		if (data->err_flag)
-// 			return (FAILURE);
-// 		if (data->someone_dead || data->ended_nums == arg->number_of_philosophers)
-// 			break ;
-// 		safe_usleep(SHORT_TIME);
-// 	}
-// 	return (SUCCESS);
-// }

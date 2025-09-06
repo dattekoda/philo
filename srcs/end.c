@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:00:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 06:14:08 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 18:42:43 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,19 @@ int	update_dead_flag(t_philo *philo)
 		return (SUCCESS);
 	philo->dead = true;
 	safe_printf(philo, MSG_DIE);
-	if (pthread_mutex_lock(philo->data->data_mutex))
-		return (msg_function_err(ERR_MSG_LOCK), ERR);
+	pthread_mutex_lock(philo->data->end_mutex);
 	philo->data->someone_dead = true;
-	if (pthread_mutex_unlock(philo->data->data_mutex))
-		return (msg_function_err(ERR_MSG_UNLOCK), ERR);
-	return (SUCCESS);
+	return (pthread_mutex_unlock(philo->data->end_mutex), SUCCESS);
 }
 
 // end 1 not yet 0
 int	check_if_end(t_philo *philo)
 {
-	if (philo->arg->number_of_times_each_philosopher_must_eat != NO_OPTION &&
+	pthread_mutex_lock(philo->data->end_mutex);
+	if (philo->arg->number_of_times_each_philosopher_must_eat != NO_OPTION && \
 		philo->data->ended_nums == philo->arg->number_of_philosophers)
-		return (END);
+		return (pthread_mutex_unlock(philo->data->end_mutex), END);
 	if (philo->data->someone_dead)
-		return (END);
-	return (NOT_END);
+		return (pthread_mutex_unlock(philo->data->end_mutex), END);
+	return (pthread_mutex_unlock(philo->data->end_mutex), NOT_END);
 }

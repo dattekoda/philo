@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:05:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 02:48:04 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 19:36:44 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,11 @@ int	init_data(t_data *data, t_arg *arg)
 		return (ERR);
 	if (safe_init(&data->printf_mutex, 1))
 		return (free_data(data), ERR);
-	// data->fork_state = ft_calloc(arg->number_of_philosophers, sizeof(bool));
-	// if (!data->fork_state)
-	// 	return (free_data(data), msg_function_err(ERR_MSG_MALLOC), ERR);
 	if (safe_init(&data->fork_mutex, arg->number_of_philosophers))
 		return (free_data(data), ERR);
 	if (safe_init(&data->err_mutex, 1))
+		return (free_data(data), 1);
+	if (safe_init(&data->end_mutex, 1))
 		return (free_data(data), 1);
 	return (SUCCESS);
 }

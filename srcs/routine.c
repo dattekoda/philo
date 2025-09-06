@@ -6,16 +6,17 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 12:25:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 17:34:07 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 22:01:35 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "end.h"
 #include "routine.h"
 #include "utils.h"
 #define HALF_TIME 500
 
 static int	wait_until_all_threads_created(t_philo *philo);
-static int	is_odd(t_philo *philo);
+static int	is_even(t_philo *philo);
 static int	do_sleep(t_philo *philo);
 static int	do_think(t_philo *philo);
 
@@ -26,19 +27,21 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	if (wait_until_all_threads_created(philo))
 		return (set_err_flag(philo->data), NULL);
-	if (is_odd(philo) || philo->data->err_flag)
+	if (philo->arg->number_of_philosophers == 1)
+		return (take_one_fork(philo), NULL);
+	if (is_even(philo) || philo->data->err_flag)
 		return (set_err_flag(philo->data), NULL);
 	while (1)
 	{
-		if (check_if_end(philo))
+		if (philo->data->end_flag)
 			break ;
 		if (do_eat(philo) || philo->data->err_flag)
 			return (set_err_flag(philo->data), NULL);
-		if (check_if_end(philo))
+		if (philo->data->end_flag)
 			break ;
 		if (do_sleep(philo) || philo->data->err_flag)
 			return (set_err_flag(philo->data), NULL);
-		if (check_if_end(philo))
+		if (philo->data->end_flag)
 			break ;
 		if (do_think(philo) || philo->data->err_flag)
 			return (set_err_flag(philo->data), NULL);
@@ -58,19 +61,20 @@ static int	wait_until_all_threads_created(t_philo *philo)
 	{
 		if (philo->data->created == philo->arg->number_of_philosophers)
 			break ;
-		if (philo->data->err_flag)
-			return (ERR);
-		if (safe_usleep(100))
+		if (safe_usleep(100, philo->data))
 			return (ERR);
 	}
 	return (SUCCESS);
 }
 
-static int	is_odd(t_philo *philo)
+static int	is_even(t_philo *philo)
 {
-	if (philo->idx % 2 == 0)
+	if ((philo->idx + 1) % 2 == 0)
 	{
-		if (safe_usleep(philo->arg->time_to_eat * HALF_TIME))
+		if (do_think(philo))
+			return (ERR);
+		if (safe_usleep(philo->arg->time_to_eat * HALF_TIME, \
+			philo->data))
 			return (ERR);
 	}
 	return (SUCCESS);
@@ -80,22 +84,19 @@ static int	do_sleep(t_philo *philo)
 {
 	if (safe_printf(philo, MSG_SLEEP))
 		return (ERR);
-	if (safe_usleep(philo->arg->time_to_sleep * MS_TO_US))
+	if (safe_usleep(philo->arg->time_to_sleep * MS_TO_US, \
+		philo->data))
 		return (ERR);
 	pthread_mutex_lock(philo->data->data_mutex);
 	if (update_time_since_start(philo, &philo->data->now_ms))
 		return (pthread_mutex_unlock(philo->data->data_mutex), ERR);
 	pthread_mutex_unlock(philo->data->data_mutex);
-	if (update_dead_flag(philo))
-		return (ERR);
 	return (SUCCESS);
 }
 
 static int	do_think(t_philo *philo)
 {
-	if (safe_printf(philo, MSG_SLEEP))
-		return (ERR);
-	if (update_dead_flag(philo))
+	if (safe_printf(philo, MSG_THINK))
 		return (ERR);
 	return (SUCCESS);
 }

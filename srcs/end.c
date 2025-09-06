@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:00:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 18:42:43 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 21:27:19 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,30 @@ void	set_err_flag(t_data *data)
 	pthread_mutex_unlock(data->err_mutex);
 }
 
-int	update_dead_flag(t_philo *philo)
+void	update_dead_flag(t_philo *philo)
 {
 	if (philo->arg->time_to_die + philo->last_time_to_eat > philo->data->now_ms \
-		|| philo->data->someone_dead)
-		return (SUCCESS);
+		|| philo->data->end_flag)
+		return ;
 	philo->dead = true;
 	safe_printf(philo, MSG_DIE);
-	pthread_mutex_lock(philo->data->end_mutex);
-	philo->data->someone_dead = true;
-	return (pthread_mutex_unlock(philo->data->end_mutex), SUCCESS);
+	philo->data->end_flag = true;
+	return ;
+}
+
+void	check_must_eat(t_philo *philo)
+{
+	if (philo->arg->number_of_times_each_philosopher_must_eat != NO_OPTION && \
+		philo->data->ended_nums == philo->arg->number_of_philosophers)
+	philo->data->end_flag = true;
 }
 
 // end 1 not yet 0
 int	check_if_end(t_philo *philo)
 {
-	pthread_mutex_lock(philo->data->end_mutex);
-	if (philo->arg->number_of_times_each_philosopher_must_eat != NO_OPTION && \
-		philo->data->ended_nums == philo->arg->number_of_philosophers)
-		return (pthread_mutex_unlock(philo->data->end_mutex), END);
-	if (philo->data->someone_dead)
-		return (pthread_mutex_unlock(philo->data->end_mutex), END);
-	return (pthread_mutex_unlock(philo->data->end_mutex), NOT_END);
+	check_must_eat(philo);
+	update_dead_flag(philo);
+	if (philo->data->end_flag)
+		return (END);
+	return (NOT_END);
 }

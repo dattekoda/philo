@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:54:36 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 17:26:25 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 21:21:06 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,8 @@
 
 # define ERR_MSG_USAGE "Usage: "
 # define ERR_MSG_INVALID "Invalid number of arguments.\n"
-# define ERR_MSG_ARGUMENTS " number_of_philosophers" \
-" time_to_die" \
-" time_to_eat" \
-" time_to_sleep" \
-" [number_of_times_each_philosopher_must_eat]\n"
-# define ERR_MSG_FORMAT "Invalid format of arguments.\n" \
-"all arguments should be number.\n" \
-"number_of_philosophers > 0\n" \
-"time_to_die > 1\n" \
-"time_to_eat > 1\n" \
-"time_to_sleep > 1\n" \
-"[number_of_times_each_philosopher_must_eat] > 0\n"
 # define ERR_MSG_INIT "pthread_mutex_init"
 # define ERR_MSG_MALLOC "malloc"
-# define ERR_MSG_LOCK "pthread_mutex_lock"
-# define ERR_MSG_UNLOCK "pthread_mutex_unlock"
 # define ERR_MSG_DESTROY "pthread_mutex_destroy"
 # define ERR_MSG_PRINTF "printf"
 # define ERR_MSG_GETTIMEOFDAY "gettimeofday"
@@ -69,20 +55,20 @@ typedef struct s_arg
 	int			number_of_times_each_philosopher_must_eat;
 }	t_arg;
 
+// check if all philos are over
+// number_of_times_each_philosopher_must_eat
 typedef struct s_data
 {
 	int				created;
-	// check if all philos are over number_of_times_each_philosopher_must_eat
 	int				ended_nums;
 	uint64_t		start_ms;
 	uint64_t		now_ms;
-	bool			someone_dead;
+	bool			end_flag; // over must_eat or dead
 	bool			err_flag;
 	pthread_mutex_t	*data_mutex;
 	pthread_mutex_t	*printf_mutex;
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	*err_mutex;
-	pthread_mutex_t	*end_mutex;
 }	t_data;
 
 typedef struct s_philo

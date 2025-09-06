@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routine.h                                          :+:      :+:    :+:   */
+/*   end.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/30 12:28:51 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 21:52:03 by khanadat         ###   ########.fr       */
+/*   Created: 2025/09/06 21:28:37 by khanadat          #+#    #+#             */
+/*   Updated: 2025/09/06 21:29:27 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ROUTINE_H
-# define ROUTINE_H
+#ifndef END_H
+# define END_H
 
 # include "define.h"
 
-// eat.c
-int		do_eat(t_philo *philo);
-int		take_one_fork(t_philo *philo);
-
-// routine.c
-void	*routine(void *arg);
+// end.c
+void	update_dead_flag(t_philo *philo);
+void	set_err_flag(t_data *data);
+int		check_if_end(t_philo *philo);
 
 #endif

@@ -6,10 +6,11 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 16:25:19 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 18:45:47 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 21:59:34 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "end.h"
 #include "define.h"
 #include "utils.h"
 
@@ -28,8 +29,6 @@ int	do_eat(t_philo *philo)
 		pthread_mutex_unlock(f + philo->left_fork_id), ERR);
 	pthread_mutex_unlock(f + philo->left_fork_id);
 	pthread_mutex_unlock(f + philo->right_fork_id);
-	if (update_dead_flag(philo))
-		return (ERR);
 	return (SUCCESS);
 }
 
@@ -53,7 +52,8 @@ static int	update_eat(t_philo *philo)
 
 	if (safe_printf(philo, MSG_EAT))
 		return (ERR);
-	if (safe_usleep(philo->arg->time_to_eat * MS_TO_US))
+	if (safe_usleep(philo->arg->time_to_eat * MS_TO_US, \
+		philo->data))
 		return (ERR);
 	philo->eat_count++;
 	must_eat = philo->arg->number_of_times_each_philosopher_must_eat;
@@ -62,9 +62,24 @@ static int	update_eat(t_philo *philo)
 	if (!philo->over_mustcount && must_eat <= philo->eat_count)
 	{
 		philo->over_mustcount = true;
-		pthread_mutex_lock(philo->data->end_mutex);
+		pthread_mutex_lock(philo->data->data_mutex);
 		philo->data->ended_nums++;
-		pthread_mutex_unlock(philo->data->end_mutex);
+		pthread_mutex_unlock(philo->data->data_mutex);
 	}
 	return (SUCCESS);
+}
+
+void	take_one_fork(t_philo *philo)
+{
+	pthread_mutex_t	*f;
+
+	f = philo->data->fork_mutex;
+	pthread_mutex_lock(f + philo->right_fork_id);
+	if (safe_printf(philo, MSG_FORK))
+	{
+		pthread_mutex_unlock(f + philo->right_fork_id);
+		set_err_flag(philo->data);
+		return ;
+	}
+	pthread_mutex_unlock(f + philo->right_fork_id);
 }

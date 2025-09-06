@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:05:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 19:36:44 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/06 21:21:14 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ int	validate_arg(int argc, char *argv[])
 	if (argc != DEFAULT_ARGC && argc != OPTION_ARGC)
 		return (msg_usage_err(argv[0]), ERR);
 	if (ft_ato64(argv[1]) < 1)
-		return (msg_err(ERR_MSG_FORMAT), ERR);
+		return (msg_format_err(), ERR);
 	if (ft_ato64(argv[2]) < 1)
-		return (msg_err(ERR_MSG_FORMAT), ERR);
+		return (msg_format_err(), ERR);
 	if (ft_ato64(argv[3]) < 1)
-		return (msg_err(ERR_MSG_FORMAT), ERR);
+		return (msg_format_err(), ERR);
 	if (ft_ato64(argv[4]) < 1)
-		return (msg_err(ERR_MSG_FORMAT), ERR);
+		return (msg_format_err(), ERR);
 	if (argc == OPTION_ARGC && ft_ato64(argv[5]) < 1)
-		return (msg_err(ERR_MSG_FORMAT), ERR);
+		return (msg_format_err(), ERR);
 	return (SUCCESS);
 }
 
@@ -57,8 +57,6 @@ int	init_data(t_data *data, t_arg *arg)
 	if (safe_init(&data->fork_mutex, arg->number_of_philosophers))
 		return (free_data(data), ERR);
 	if (safe_init(&data->err_mutex, 1))
-		return (free_data(data), 1);
-	if (safe_init(&data->end_mutex, 1))
 		return (free_data(data), 1);
 	return (SUCCESS);
 }

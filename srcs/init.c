@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:05:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 03:38:42 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 05:42:41 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,14 @@ int	init_arg(int argc, char **argv, t_arg *arg)
 	arg->number_of_times_each_philosopher_must_eat = NO_OPTION;
 	if (argc == OPTION_ARGC)
 		arg->number_of_times_each_philosopher_must_eat = (int)ft_ato64(argv[5]);
-	arg->monitor_size = arg->number_of_philosophers / PER_PHILO_NUM + 1;
 	return (SUCCESS);
 }
 
 int	init_data(t_data *data, t_arg *arg)
 {
 	memset(data, 0, sizeof(t_data));
+	data->monitor_size = arg->number_of_philosophers / PER_PHILO_NUM + 1;
+	data->thread_size = arg->number_of_philosophers + data->monitor_size;
 	if (safe_init(&data->data_mutex, 1))
 		return (ERR);
 	if (safe_init(&data->printf_mutex, 1))
@@ -76,23 +77,24 @@ int	init_philo(t_philo **philo, t_data *data, t_arg *arg)
 	return (SUCCESS);
 }
 
-int	init_monitor(t_monitor **monitor, t_philo *philo, t_arg *arg)
+int	init_monitor(t_monitor **monitor, t_philo *philo, t_data *data)
 {
 	int	i;
 
-	*monitor = ft_calloc(arg->monitor_size, sizeof(t_monitor));
+	*monitor = ft_calloc(data->monitor_size, sizeof(t_monitor));
 	if (!*monitor)
 		return (msg_function_err(ERR_MSG_MALLOC), ERR);
 	i = -1;
-	while (++i < arg->monitor_size)
+	while (++i < data->monitor_size)
 	{
 		(*monitor + i)->idx = i;
-		if (i != arg->monitor_size)
+		if (i != data->monitor_size)
 			(*monitor + i)->num_player = PER_PHILO_NUM;
 		else
 			(*monitor + i)->num_player \
-				= arg->number_of_philosophers % PER_PHILO_NUM;
+				= philo->arg->number_of_philosophers % PER_PHILO_NUM;
 		(*monitor + i)->player = philo + PER_PHILO_NUM * i;
+		(*monitor + i)->data = data;
 	}
 	return (SUCCESS);
 }

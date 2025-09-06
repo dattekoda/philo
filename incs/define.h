@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:54:36 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 03:38:54 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 05:43:05 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,20 @@ typedef struct s_arg
 	uint64_t	time_to_eat;
 	uint64_t	time_to_sleep;
 	int			number_of_times_each_philosopher_must_eat;
-	int			monitor_size;
-	int			thread_size;
 }	t_arg;
 
 // check if all philos are over
 // number_of_times_each_philosopher_must_eat
 typedef struct s_data
 {
-	int				created;
-	int				ended_nums;
-	uint64_t		start_ms;
-	uint64_t		now_ms;
 	bool			end_flag; // over must_eat or dead
 	bool			err_flag;
+	int				created;
+	int				ended_nums;
+	int				thread_size;
+	int				monitor_size;
+	uint64_t		start_ms;
+	uint64_t		now_ms;
 	pthread_mutex_t	*data_mutex;
 	pthread_mutex_t	*printf_mutex;
 	pthread_mutex_t	*fork_mutex;
@@ -93,6 +93,7 @@ typedef struct s_monitor
 	int				idx;
 	int				num_player;
 	t_philo			*player;
+	t_data			*data;
 }	t_monitor;
 
 #endif

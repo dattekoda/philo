@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:13:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 03:37:48 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 05:46:03 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	monitor_philos(t_philo *philo, t_arg *arg, pthread_t *thread)
 	if (init_monitor(&monitor, philo, arg))
 		return (ERR);
 	i = -1;
-	while (++i < arg->monitor_size)
+	while (++i < philo->data->monitor_size)
 	{
 		if (pthread_create((thread + i), NULL, routine_monitor, monitor + i))
 		{
@@ -91,15 +91,16 @@ void	*routine_monitor(void *arg)
 	t_monitor	*monitor;
 
 	monitor = (t_monitor *)monitor;
-	wait_until_all_threads_created(monitor->philo)
+	if (wait_until_all_threads_created(monitor->data))
+		return (set_err_flag(monitor->data), NULL);
 	while (1)
 	{
 		i = -1;
-		while (++i < philo->arg->number_of_philosophers)
-			if (check_if_end(&philo[i]))
-				return ;
-		if (philo->data->err_flag \
-			|| safe_usleep(SHORT_TIME, philo->data))
-			return ;
+		while (++i < monitor->num_player)
+			if (check_if_end(monitor->player + i))
+				return (NULL);
+		if (monitor->data->err_flag \
+			|| safe_usleep(SHORT_TIME, monitor->data))
+			return (NULL);
 	}
 }

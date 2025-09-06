@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 12:25:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 03:38:11 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 05:41:51 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (wait_until_all_threads_created(philo))
+	if (wait_until_all_threads_created(philo->data))
 		return (set_err_flag(philo->data), NULL);
 	if (philo->arg->number_of_philosophers == 1)
 		return (take_one_fork(philo), NULL);
@@ -47,19 +47,19 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-int	wait_until_all_threads_created(t_philo *philo)
+int	wait_until_all_threads_created(t_data *data)
 {
-	pthread_mutex_lock(philo->data->data_mutex);
-	philo->data->created++;
-	if (get_milliseconds_time(&philo->data->start_ms))
-		return (pthread_mutex_unlock(philo->data->data_mutex), ERR);
-	philo->data->now_ms = 0;
-	pthread_mutex_unlock(philo->data->data_mutex);
+	pthread_mutex_lock(data->data_mutex);
+	data->created++;
+	if (get_milliseconds_time(&data->start_ms))
+		return (pthread_mutex_unlock(data->data_mutex), ERR);
+	data->now_ms = 0;
+	pthread_mutex_unlock(data->data_mutex);
 	while (1)
 	{
-		if (philo->data->created == philo->arg->monitor_size)
+		if (data->created == data->monitor_size)
 			break ;
-		if (safe_usleep(SHORT_TIME, philo->data))
+		if (safe_usleep(SHORT_TIME, data))
 			return (ERR);
 	}
 	return (SUCCESS);

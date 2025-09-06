@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 02:55:57 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 05:45:00 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	safe_usleep(uint64_t time, t_data *data)
 			break ;
 	}
 	if (update_now_ms(data))
-		return (ERR);
+		return (set_err_flag(data), ERR);
 	return (SUCCESS);
 }
 

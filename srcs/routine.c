@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 12:25:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 22:01:35 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 03:38:11 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include "routine.h"
 #include "utils.h"
 #define HALF_TIME 500
-
-static int	wait_until_all_threads_created(t_philo *philo);
 static int	is_even(t_philo *philo);
 static int	do_sleep(t_philo *philo);
 static int	do_think(t_philo *philo);
@@ -49,7 +47,7 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-static int	wait_until_all_threads_created(t_philo *philo)
+int	wait_until_all_threads_created(t_philo *philo)
 {
 	pthread_mutex_lock(philo->data->data_mutex);
 	philo->data->created++;
@@ -59,9 +57,9 @@ static int	wait_until_all_threads_created(t_philo *philo)
 	pthread_mutex_unlock(philo->data->data_mutex);
 	while (1)
 	{
-		if (philo->data->created == philo->arg->number_of_philosophers)
+		if (philo->data->created == philo->arg->monitor_size)
 			break ;
-		if (safe_usleep(100, philo->data))
+		if (safe_usleep(SHORT_TIME, philo->data))
 			return (ERR);
 	}
 	return (SUCCESS);
@@ -87,10 +85,6 @@ static int	do_sleep(t_philo *philo)
 	if (safe_usleep(philo->arg->time_to_sleep * MS_TO_US, \
 		philo->data))
 		return (ERR);
-	pthread_mutex_lock(philo->data->data_mutex);
-	if (update_time_since_start(philo, &philo->data->now_ms))
-		return (pthread_mutex_unlock(philo->data->data_mutex), ERR);
-	pthread_mutex_unlock(philo->data->data_mutex);
 	return (SUCCESS);
 }
 

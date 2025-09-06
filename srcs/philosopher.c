@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:13:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 21:37:22 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 03:37:48 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 #include "end.h"
 #include <stdlib.h> // free malloc
 
-static int	born_to_be_thread(t_philo *philo, pthread_t *thread);
-static void	monitor_philos(t_philo *philo);
+static int	born_to_be_thread(t_philo *philo, t_arg *arg, pthread_t *thread);
+static void	monitor_philos(t_philo *philo, t_arg *arg, pthread_t * therad);
 
 int	philosopher(t_arg *arg)
 {
@@ -28,20 +28,21 @@ int	philosopher(t_arg *arg)
 		return (ERR);
 	if (init_philo(&philo, &data, arg))
 		return (free_data(&data), ERR);
-	thread = malloc(sizeof(pthread_t) * arg->number_of_philosophers);
+	thread = malloc(sizeof(pthread_t) \
+		* (arg->number_of_philosophers + arg->monitor_size));
 	if (!thread)
 		return (free_data(&data), free(philo), ERR);
-	if (born_to_be_thread(philo, thread))
-		return (free_data(&data), free(philo), ERR);
-	return (free(philo), free_data(&data), SUCCESS);
+	if (born_to_be_thread(philo, arg, thread))
+		return (free(thread), free_data(&data), free(philo), ERR);
+	return (free(thread), free(philo), free_data(&data), SUCCESS);
 }
 
-static int	born_to_be_thread(t_philo *philo, pthread_t *thread)
+static int	born_to_be_thread(t_philo *philo, t_arg *arg, pthread_t *thread)
 {
 	int		i;
 
 	i = -1;
-	while (++i < philo->arg->number_of_philosophers)
+	while (++i < arg->number_of_philosophers)
 	{
 		if (pthread_create((thread + i), NULL, routine, philo + i))
 		{
@@ -51,9 +52,10 @@ static int	born_to_be_thread(t_philo *philo, pthread_t *thread)
 			return (msg_function_err(ERR_MSG_CREATE), ERR);
 		}
 	}
-	monitor_philos(philo);
+	if (monitor_philos(philo, arg, thread + arg->number_of_philosophers))
+		return (set_err_flag(philo->data->err_flag), ERR);
 	i = -1;
-	while (++i < philo->arg->number_of_philosophers)
+	while (++i < arg->number_of_philosophers + arg->monitor_size)
 	{
 		if (pthread_join(*(thread + i), NULL))
 			return (msg_function_err(ERR_MSG_JOIN), ERR);
@@ -63,29 +65,41 @@ static int	born_to_be_thread(t_philo *philo, pthread_t *thread)
 	return (SUCCESS);
 }
 
-static void	monitor_philos(t_philo *philo)
+static int	monitor_philos(t_philo *philo, t_arg *arg, pthread_t *thread)
 {
-	int	i;
+	int			i;
+	t_monitor	*monitor;
 
-	while (1)
+	if (init_monitor(&monitor, philo, arg))
+		return (ERR);
+	i = -1;
+	while (++i < arg->monitor_size)
 	{
-		if (philo->data->created == philo->arg->number_of_philosophers)
-			break ;
-		if (safe_usleep(SHORT_TIME, philo->data))
+		if (pthread_create((thread + i), NULL, routine_monitor, monitor + i))
 		{
 			set_err_flag(philo->data);
-			return ;
+			while (0 < i--)
+				pthread_join(*(thread + i), NULL);
+			return (msg_function_err(ERR_MSG_CREATE), ERR);
 		}
 	}
+}
+
+void	*routine_monitor(void *arg)
+{
+	int			i;
+	t_monitor	*monitor;
+
+	monitor = (t_monitor *)monitor;
+	wait_until_all_threads_created(monitor->philo)
 	while (1)
 	{
 		i = -1;
 		while (++i < philo->arg->number_of_philosophers)
-		{
 			if (check_if_end(&philo[i]))
 				return ;
-		}
-		if (philo->data->err_flag)
+		if (philo->data->err_flag \
+			|| safe_usleep(SHORT_TIME, philo->data))
 			return ;
 	}
 }

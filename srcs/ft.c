@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:33:24 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/05 21:05:36 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 00:56:06 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ void	*ft_calloc(size_t count, size_t size)
 	return (cal);
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 && *s2 && *s1 == *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return ((int)((unsigned char)(*s1) - (unsigned char)(*s2)));
-}
+// int	ft_strcmp(const char *s1, const char *s2)
+// {
+// 	while (*s1 && *s2 && *s1 == *s2)
+// 	{
+// 		s1++;
+// 		s2++;
+// 	}
+// 	return ((int)((unsigned char)(*s1) - (unsigned char)(*s2)));
+// }

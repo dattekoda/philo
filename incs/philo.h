@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:17:28 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 21:29:16 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 03:25:08 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,16 @@
 # include "define.h"
 
 // init.c
-int		validate_arg(int argc, char *argv[]);
 int		init_arg(int argc, char **argv, t_arg *arg);
 int		init_data(t_data *data, t_arg *arg);
 int		init_philo(t_philo **philo, t_data *data, t_arg *arg);
+int		init_monitor(t_monitor **monitor, t_philo *philo, t_arg *arg);
 
 // philosopher.c
 int		philosopher(t_arg *arg);
 
 // routine.c
 void	*routine(void *arg);
+int		wait_until_all_threads_created(t_philo *philo);
 
 #endif

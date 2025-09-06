@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:54:36 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/06 21:21:06 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/07 03:38:54 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define NO_OPTION -1
 # define MS_TO_US 1000
 # define SHORT_TIME 100
+# define PER_PHILO_NUM 50
 
 # define ERR_MSG_USAGE "Usage: "
 # define ERR_MSG_INVALID "Invalid number of arguments.\n"
@@ -53,6 +54,8 @@ typedef struct s_arg
 	uint64_t	time_to_eat;
 	uint64_t	time_to_sleep;
 	int			number_of_times_each_philosopher_must_eat;
+	int			monitor_size;
+	int			thread_size;
 }	t_arg;
 
 // check if all philos are over
@@ -68,20 +71,28 @@ typedef struct s_data
 	pthread_mutex_t	*data_mutex;
 	pthread_mutex_t	*printf_mutex;
 	pthread_mutex_t	*fork_mutex;
+	pthread_mutex_t	*end_mutex;
 	pthread_mutex_t	*err_mutex;
 }	t_data;
 
 typedef struct s_philo
 {
-	int				idx;
 	bool			dead;
-	int				eat_count;
 	bool			over_mustcount;
-	int				right_fork_id;
-	int				left_fork_id;
+	int				idx;
+	int				eat_count;
+	int				first_fork_id;
+	int				second_fork_id;
 	int64_t			last_time_to_eat;
 	t_data			*data;
 	t_arg			*arg;
 }	t_philo;
+
+typedef struct s_monitor
+{
+	int				idx;
+	int				num_player;
+	t_philo			*player;
+}	t_monitor;
 
 #endif

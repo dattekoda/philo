@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:00:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 07:18:40 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/09/08 11:59:29 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ static void	update_dead_flag(t_philo *philo)
 		return ;
 	philo->dead = true;
 	safe_printf(philo, MSG_DIE);
-	pthread_mutex_lock(philo->data->end_mutex);
+	pthread_mutex_lock(philo->data->printf_mutex);
 	philo->data->end_flag = true;
-	pthread_mutex_unlock(philo->data->end_mutex);
+	pthread_mutex_unlock(philo->data->printf_mutex);
 }
 
 static void	check_must_eat(t_philo *philo)
@@ -58,8 +58,8 @@ static void	check_must_eat(t_philo *philo)
 	if (philo->arg->number_of_times_each_philosopher_must_eat != NO_OPTION \
 		&& philo->data->ended_nums == philo->arg->number_of_philosophers)
 	{
-		pthread_mutex_lock(philo->data->end_mutex);
+		pthread_mutex_lock(philo->data->printf_mutex);
 		philo->data->end_flag = true;
-		pthread_mutex_unlock(philo->data->end_mutex);
+		pthread_mutex_unlock(philo->data->printf_mutex);
 	}
 }

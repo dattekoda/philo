@@ -6,16 +6,17 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:13:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 07:34:42 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:12:05 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h> // free malloc
 #include "end.h"
 #include "msg.h"
 #include "philo.h"
 #include "routine.h"
 #include "utils.h"
-#include <stdlib.h> // free malloc
+#include "checker.h"
 
 static int	born_to_be_thread(t_philo *philo, t_arg *arg, \
 	pthread_t *thread, t_monitor *monitor);
@@ -69,7 +70,7 @@ static int	born_to_be_thread(t_philo *philo, t_arg *arg, \
 	while (++i < philo->data->thread_size)
 		if (pthread_join(*(thread + i), NULL))
 			return (msg_function_err(ERR_MSG_JOIN), ERR);
-	if (philo->data->err_flag)
+	if (is_err(philo->data))
 		return (ERR);
 	return (SUCCESS);
 }
@@ -107,7 +108,7 @@ static void	*routine_monitor(void *arg)
 		while (++i < monitor->num_player)
 			if (check_if_end(monitor->player + i))
 				return (NULL);
-		if (monitor->data->end_flag || monitor->data->err_flag \
+		if (is_end(monitor->data) || is_err(monitor->data) \
 			|| safe_usleep(SHORT_TIME, monitor->data))
 			return (NULL);
 	}

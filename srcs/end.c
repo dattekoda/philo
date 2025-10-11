@@ -6,22 +6,23 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:00:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 07:18:40 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:09:03 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <pthread.h>
+#include <unistd.h>
 #include "define.h"
 #include "msg.h"
 #include "utils.h"
-#include <pthread.h>
-#include <unistd.h>
+#include "checker.h"
 
 static void	update_dead_flag(t_philo *philo);
 static void	check_must_eat(t_philo *philo);
 
 void	set_err_flag(t_data *data)
 {
-	if (data->err_flag)
+	if (is_err(data))
 		return ;
 	pthread_mutex_lock(data->err_mutex);
 	data->err_flag = true;
@@ -33,10 +34,10 @@ int	check_if_end(t_philo *philo)
 {
 	pthread_mutex_lock(philo->data->data_mutex);
 	update_dead_flag(philo);
-	if (philo->data->end_flag)
+	if (is_end(philo->data))
 		return (pthread_mutex_unlock(philo->data->data_mutex), END);
 	check_must_eat(philo);
-	if (philo->data->end_flag)
+	if (is_end(philo->data))
 		return (pthread_mutex_unlock(philo->data->data_mutex), END);
 	return (pthread_mutex_unlock(philo->data->data_mutex), NOT_END);
 }

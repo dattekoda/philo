@@ -6,10 +6,11 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 16:25:19 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 07:52:40 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:08:18 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "checker.h"
 #include "define.h"
 #include "end.h"
 #include "msg.h"
@@ -84,7 +85,7 @@ void	take_one_fork(t_philo *philo)
 	}
 	while (1)
 	{
-		if (philo->data->end_flag)
+		if (is_end(philo->data))
 			break ;
 		if (safe_usleep(SHORT_TIME, philo->data))
 			break ;

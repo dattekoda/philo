@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 12:25:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 06:49:13 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:05:23 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "msg.h"
 #include "routine.h"
 #include "utils.h"
+#include "checker.h"
 #define HALF_TIME 500
 
 static int	is_even(t_philo *philo);
@@ -29,21 +30,21 @@ void	*routine(void *arg)
 		return (set_err_flag(philo->data), NULL);
 	if (philo->arg->number_of_philosophers == 1)
 		return (take_one_fork(philo), NULL);
-	if (is_even(philo) || philo->data->err_flag)
+	if (is_even(philo) || is_err(philo->data))
 		return (set_err_flag(philo->data), NULL);
 	while (1)
 	{
-		if (philo->data->end_flag)
+		if (is_end(philo->data))
 			break ;
-		if (do_eat(philo) || philo->data->err_flag)
+		if (do_eat(philo) || is_err(philo->data))
 			return (set_err_flag(philo->data), NULL);
-		if (philo->data->end_flag)
+		if (is_end(philo->data))
 			break ;
-		if (do_sleep(philo) || philo->data->err_flag)
+		if (do_sleep(philo) || is_err(philo->data))
 			return (set_err_flag(philo->data), NULL);
-		if (philo->data->end_flag)
+		if (is_end(philo->data))
 			break ;
-		if (do_think(philo) || philo->data->err_flag)
+		if (do_think(philo) || is_err(philo->data))
 			return (set_err_flag(philo->data), NULL);
 	}
 	return (NULL);
@@ -59,8 +60,13 @@ int	wait_until_all_threads_created(t_data *data)
 	pthread_mutex_unlock(data->data_mutex);
 	while (1)
 	{
+		pthread_mutex_lock(data->data_mutex);
 		if (data->created == data->thread_size)
+		{
+			pthread_mutex_unlock(data->data_mutex);
 			break ;
+		}
+		pthread_mutex_unlock(data->data_mutex);
 		if (safe_usleep(SHORT_TIME, data))
 			return (ERR);
 	}

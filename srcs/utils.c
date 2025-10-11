@@ -6,19 +6,21 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 06:46:21 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:07:07 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "define.h"
-#include "end.h"
-#include "msg.h"
 #include <unistd.h> // usleep
 #include <stdlib.h>
 #include <limits.h>
 #include <stdio.h>
 #include <inttypes.h>
 #include <sys/time.h>
+#include "define.h"
+#include "end.h"
+#include "msg.h"
+#include "checker.h"
+
 #define US_TO_MS 1000
 #define S_TO_US 1000000
 #define VERY_VERY_SHORT_TIME 10
@@ -30,9 +32,9 @@ static int	get_useconds_time(uint64_t *time);
 int	safe_printf(t_philo *philo, char *msg)
 {
 	pthread_mutex_lock(philo->data->printf_mutex);
-	if (philo->data->err_flag)
+	if (is_err(philo->data))
 		return (pthread_mutex_unlock(philo->data->printf_mutex), ERR);
-	if (philo->data->end_flag)
+	if (is_end(philo->data))
 		return (pthread_mutex_unlock(philo->data->printf_mutex), SUCCESS);
 	if (printf("%"PRId64" %d %s\n", \
 		philo->data->now_ms, philo->idx + 1, msg) < 0)

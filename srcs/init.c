@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:05:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 07:20:54 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 15:25:44 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,8 @@ int	init_philo(t_philo **philo, t_data *data, t_arg *arg)
 		(*philo + i)->idx = i;
 		(*philo + i)->data = data;
 		(*philo + i)->arg = arg;
-		if (i % 2 == 1)
-		{
-			(*philo + i)->first_fork_id = i;
-			(*philo + i)->second_fork_id = (i + 1) \
-			% arg->number_of_philosophers;
-		}
-		else
-		{
-			(*philo + i)->first_fork_id = (i + 1) % arg->number_of_philosophers;
-			(*philo + i)->second_fork_id = i;
-		}
+		(*philo + i)->first_fork_id = (i + 1) % arg->number_of_philosophers;
+		(*philo + i)->second_fork_id = i;
 	}
 	return (SUCCESS);
 }

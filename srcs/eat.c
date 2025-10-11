@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 16:25:19 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 17:08:18 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:30:27 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	update_eat(t_philo *philo)
 
 	if (safe_printf(philo, MSG_EAT))
 		return (ERR);
-	philo->last_time_to_eat = philo->data->now_ms;
+	philo->last_time_to_eat = get_now_ms(philo->data);
 	philo->eat_count++;
 	must_eat = philo->arg->number_of_times_each_philosopher_must_eat;
 	if (must_eat != NO_OPTION && !philo->over_mustcount \

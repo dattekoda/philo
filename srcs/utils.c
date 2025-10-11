@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 17:07:07 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:27:04 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	safe_printf(t_philo *philo, char *msg)
 	if (is_end(philo->data))
 		return (pthread_mutex_unlock(philo->data->printf_mutex), SUCCESS);
 	if (printf("%"PRId64" %d %s\n", \
-		philo->data->now_ms, philo->idx + 1, msg) < 0)
+		get_now_ms(philo->data), philo->idx + 1, msg) < 0)
 		return (msg_function_err(ERR_MSG_PRINTF), \
 		pthread_mutex_unlock(philo->data->printf_mutex), ERR);
 	pthread_mutex_unlock(philo->data->printf_mutex);

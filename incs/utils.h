@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:23:33 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 05:56:02 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:48:41 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ void	free_data(t_data *data);
 int		safe_printf(t_philo *philo, char *msg);
 int		get_milliseconds_time(uint64_t *time);
 int		safe_usleep(uint64_t time, t_data *data);
+int		update_now_ms(t_data *data);
 
 #endif

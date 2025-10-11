@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:00:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 17:30:12 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 18:06:36 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	check_if_end(t_philo *philo)
 
 static void	update_dead_flag(t_philo *philo)
 {
-	if (philo->arg->time_to_die + philo->last_time_to_eat > philo->data->now_ms \
-		|| is_end(philo->data))
+	if (philo->arg->time_to_die + philo->last_time_to_eat \
+		> get_now_ms(philo->data) || is_end(philo->data))
 		return ;
 	philo->dead = true;
 	safe_printf(philo, MSG_DIE);

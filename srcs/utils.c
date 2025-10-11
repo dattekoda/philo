@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 17:27:04 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:48:28 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,13 @@ int	safe_usleep(uint64_t time, t_data *data)
 	return (SUCCESS);
 }
 
-static int	update_now_ms(t_data *data)
+int	update_now_ms(t_data *data)
 {
-	pthread_mutex_lock(data->data_mutex);
+	pthread_mutex_lock(data->now_ms_mutex);
 	if (get_milliseconds_time(&data->now_ms))
-		return (pthread_mutex_unlock(data->data_mutex), ERR);
+		return (pthread_mutex_unlock(data->now_ms_mutex), ERR);
 	data->now_ms = data->now_ms - data->start_ms;
-	pthread_mutex_unlock(data->data_mutex);
+	pthread_mutex_unlock(data->now_ms_mutex);
 	return (SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 12:25:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 17:05:23 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:53:53 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,10 @@ int	wait_until_all_threads_created(t_data *data)
 	data->created++;
 	if (get_milliseconds_time(&data->start_ms))
 		return (pthread_mutex_unlock(data->data_mutex), ERR);
-	data->now_ms = 0;
 	pthread_mutex_unlock(data->data_mutex);
+	pthread_mutex_lock(data->now_ms_mutex);
+	data->now_ms = 0;
+	pthread_mutex_unlock(data->now_ms_mutex);
 	while (1)
 	{
 		pthread_mutex_lock(data->data_mutex);

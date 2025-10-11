@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 11:19:19 by khanadat          #+#    #+#             */
-/*   Updated: 2025/09/07 05:56:56 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:43:22 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,5 @@ void	free_data(t_data *data)
 	safe_destroy(data->fork_mutex);
 	safe_destroy(data->end_mutex);
 	safe_destroy(data->err_mutex);
+	safe_destroy(data->now_ms_mutex);
 }

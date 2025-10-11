@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:05:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 15:25:44 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:41:17 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ int	init_data(t_data *data, t_arg *arg)
 	if (safe_init(&data->end_mutex, 1))
 		return (free_data(data), ERR);
 	if (safe_init(&data->err_mutex, 1))
-		return (free_data(data), 1);
+		return (free_data(data), ERR);
+	if (safe_init(&data->now_ms_mutex, 1))
+		return (free_data(data), ERR);
 	return (SUCCESS);
 }
 

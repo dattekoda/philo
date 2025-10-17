@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:13:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/16 16:15:15 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/17 21:44:28 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static int	monitor_thread(t_philo *philo, t_data *data, \
 	return (SUCCESS);
 }
 
+#include <stdio.h>
 static void	*routine_monitor(void *arg)
 {
 	int			i;

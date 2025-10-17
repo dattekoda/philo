@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 16:25:19 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/16 16:50:32 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/17 21:47:45 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ static int	take_forks(t_philo *philo)
 	pthread_mutex_lock(philo->first_fork);
 	if (safe_printf(philo, MSG_FORK))
 		return (pthread_mutex_unlock(philo->first_fork), ERR);
-	if (philo->arg->number_of_philosophers == 1)
-		return (pthread_mutex_unlock(philo->first_fork), SUCCESS);
 	pthread_mutex_lock(philo->second_fork);
 	if (safe_printf(philo, MSG_FORK))
 		return (pthread_mutex_unlock(philo->first_fork), \
@@ -68,6 +66,7 @@ static int	update_eat(t_philo *philo)
 	return (SUCCESS);
 }
 
+#include <stdio.h>
 void	take_one_fork(t_philo *philo)
 {
 	pthread_mutex_lock(philo->first_fork);
@@ -79,6 +78,11 @@ void	take_one_fork(t_philo *philo)
 	}
 	while (1)
 	{
+		if (update_now_ms(philo->data))
+		{
+			set_err_flag(philo->data);
+			break ;
+		}
 		if (is_end(philo->data))
 			break ;
 		if (safe_usleep(SHORT_TIME, philo->data))

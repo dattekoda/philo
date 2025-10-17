@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:00:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/16 20:28:49 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/17 21:45:15 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	set_err_flag(t_data *data)
 // end 1 not yet 0
 int	check_if_end(t_philo *philo)
 {
+	update_now_ms(philo->data);
 	pthread_mutex_lock(philo->data->data_mutex);
 	update_dead_flag(philo);
 	if (is_end(philo->data))

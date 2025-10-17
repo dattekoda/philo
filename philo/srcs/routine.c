@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 12:25:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/16 16:50:59 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/17 22:37:11 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,8 @@ static int	do_think(t_philo *philo)
 	}
 	else
 	{
-		if (safe_usleep(philo->arg->time_to_eat * FASTER_THAN_EVEN, philo->data))
+		if (safe_usleep(philo->arg->time_to_eat * FASTER_THAN_EVEN, \
+			philo->data))
 			return (ERR);
 	}
 	return (SUCCESS);

@@ -5,6 +5,11 @@
 		"checker.h": "c",
 		"msg.h": "c",
 		"unistd.h": "c",
-		"err.h": "c"
+		"err.h": "c",
+		"array": "c",
+		"string": "c",
+		"string_view": "c",
+		"ranges": "c",
+		"span": "c"
 	}
 }

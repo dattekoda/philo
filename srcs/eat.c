@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 16:25:19 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 17:30:27 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/16 16:50:32 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,31 @@
 #include "utils.h"
 
 static int	update_eat(t_philo *philo);
-static int	take_forks(t_philo *philo, pthread_mutex_t *f);
+static int	take_forks(t_philo *philo);
 
 int	do_eat(t_philo *philo)
 {
-	pthread_mutex_t	*f;
-
-	f = philo->data->fork_mutex;
-	if (take_forks(philo, f))
+	if (take_forks(philo))
 		return (ERR);
 	if (update_eat(philo))
-		return (pthread_mutex_unlock(f + philo->first_fork_id), \
-		pthread_mutex_unlock(f + philo->second_fork_id), ERR);
-	pthread_mutex_unlock(f + philo->second_fork_id);
-	pthread_mutex_unlock(f + philo->first_fork_id);
+		return (pthread_mutex_unlock(philo->first_fork), \
+		pthread_mutex_unlock(philo->second_fork), ERR);
+	pthread_mutex_unlock(philo->second_fork);
+	pthread_mutex_unlock(philo->first_fork);
 	return (SUCCESS);
 }
 
-static int	take_forks(t_philo *philo, pthread_mutex_t *f)
+static int	take_forks(t_philo *philo)
 {
-	pthread_mutex_lock(f + philo->first_fork_id);
+	pthread_mutex_lock(philo->first_fork);
 	if (safe_printf(philo, MSG_FORK))
-		return (pthread_mutex_unlock(f + philo->first_fork_id), ERR);
+		return (pthread_mutex_unlock(philo->first_fork), ERR);
 	if (philo->arg->number_of_philosophers == 1)
-		return (pthread_mutex_unlock(f + philo->first_fork_id), SUCCESS);
-	pthread_mutex_lock(f + philo->second_fork_id);
+		return (pthread_mutex_unlock(philo->first_fork), SUCCESS);
+	pthread_mutex_lock(philo->second_fork);
 	if (safe_printf(philo, MSG_FORK))
-		return (pthread_mutex_unlock(f + philo->first_fork_id), \
-		pthread_mutex_unlock(f + philo->second_fork_id), ERR);
+		return (pthread_mutex_unlock(philo->first_fork), \
+		pthread_mutex_unlock(philo->second_fork), ERR);
 	return (SUCCESS);
 }
 
@@ -54,11 +51,11 @@ static int	update_eat(t_philo *philo)
 
 	if (safe_printf(philo, MSG_EAT))
 		return (ERR);
-	philo->last_time_to_eat = get_now_ms(philo->data);
-	philo->eat_count++;
+	update_ltte(philo, get_now_ms(philo->data));
+	update_eat_count(philo);
 	must_eat = philo->arg->number_of_times_each_philosopher_must_eat;
 	if (must_eat != NO_OPTION && !philo->over_mustcount \
-		&& must_eat <= philo->eat_count)
+		&& must_eat <= get_eat_count(philo))
 	{
 		philo->over_mustcount = true;
 		pthread_mutex_lock(philo->data->data_mutex);
@@ -73,13 +70,10 @@ static int	update_eat(t_philo *philo)
 
 void	take_one_fork(t_philo *philo)
 {
-	pthread_mutex_t	*f;
-
-	f = philo->data->fork_mutex;
-	pthread_mutex_lock(f + philo->first_fork_id);
+	pthread_mutex_lock(philo->first_fork);
 	if (safe_printf(philo, MSG_FORK))
 	{
-		pthread_mutex_unlock(f + philo->first_fork_id);
+		pthread_mutex_unlock(philo->first_fork);
 		set_err_flag(philo->data);
 		return ;
 	}
@@ -90,5 +84,5 @@ void	take_one_fork(t_philo *philo)
 		if (safe_usleep(SHORT_TIME, philo->data))
 			break ;
 	}
-	pthread_mutex_unlock(f + philo->first_fork_id);
+	pthread_mutex_unlock(philo->first_fork);
 }

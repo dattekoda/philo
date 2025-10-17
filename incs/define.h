@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:54:36 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 20:55:51 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/16 15:48:48 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 
 typedef struct s_arg
 {
+	bool		is_odd;
 	int			number_of_philosophers;
 	uint64_t	time_to_die;
 	uint64_t	time_to_eat;
@@ -82,9 +83,11 @@ typedef struct s_philo
 	bool			over_mustcount;
 	int				idx;
 	int				eat_count;
-	int				first_fork_id;
-	int				second_fork_id;
-	int64_t			last_time_to_eat;
+	int				is_odd;
+	pthread_mutex_t	*philo_mutex;
+	pthread_mutex_t	*first_fork;
+	pthread_mutex_t	*second_fork;
+	uint64_t		last_time_to_eat;
 	t_data			*data;
 	t_arg			*arg;
 }	t_philo;

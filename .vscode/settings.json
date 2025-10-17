@@ -2,6 +2,7 @@
 	"files.associations": {
 		"utils.h": "c",
 		"define.h": "c",
-		"checker.h": "c"
+		"checker.h": "c",
+		"msg.h": "c"
 	}
 }

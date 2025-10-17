@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:22:18 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 20:31:42 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/16 16:51:26 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,19 @@
 #include "end.h"
 #include "msg.h"
 #include "checker.h"
+#include "utils.h"
 
 #define US_TO_MS 1000
 #define S_TO_US 1000000
 #define VERY_VERY_SHORT_TIME 10
 
-static int	update_now_ms(t_data *data);
 static int	get_useconds_time(uint64_t *time);
 
 // update now_ms and printf philo's action.
 int	safe_printf(t_philo *philo, char *msg)
 {
+	if (update_now_ms(philo->data))
+		return (ERR);
 	pthread_mutex_lock(philo->data->printf_mutex);
 	if (is_err(philo->data))
 		return (pthread_mutex_unlock(philo->data->printf_mutex), ERR);
@@ -72,17 +74,20 @@ int	safe_usleep(uint64_t time, t_data *data)
 		if (is_err(data) || is_end(data))
 			break ;
 	}
-	if (update_now_ms(data))
-		return (set_err_flag(data), ERR);
+	// if (update_now_ms(data))
+	// 	return (set_err_flag(data), ERR);
 	return (SUCCESS);
 }
 
 int	update_now_ms(t_data *data)
 {
+	uint64_t	start;
+
+	start = get_start_ms(data);
 	pthread_mutex_lock(data->now_ms_mutex);
 	if (get_milliseconds_time(&data->now_ms))
 		return (pthread_mutex_unlock(data->now_ms_mutex), ERR);
-	data->now_ms = data->now_ms - data->start_ms;
+	data->now_ms = data->now_ms - start;
 	pthread_mutex_unlock(data->now_ms_mutex);
 	return (SUCCESS);
 }

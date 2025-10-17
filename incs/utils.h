@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:23:33 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 17:48:41 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/16 14:30:33 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 // free.c
 void	free_data(t_data *data);
+void	free_philo(t_philo *philo);
 
 // utils.c
 int		safe_printf(t_philo *philo, char *msg);

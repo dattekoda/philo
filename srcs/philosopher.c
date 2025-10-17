@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:13:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 17:12:05 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/16 16:15:15 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ int	philosopher(t_arg *arg)
 	if (init_philo(&philo, &data, arg))
 		return (free_data(&data), ERR);
 	if (init_monitor(&monitor, philo, &data))
-		return (free_data(&data), free(philo), ERR);
+		return (free_data(&data), free_philo(philo), ERR);
 	thread = ft_calloc(data.thread_size, sizeof(pthread_t));
 	if (!thread)
-		return (free_data(&data), free(philo), free(monitor), ERR);
+		return (free_data(&data), free_philo(philo), free(monitor), ERR);
 	if (born_to_be_thread(philo, arg, thread, monitor))
 		return (free(thread), free_data(&data), \
-		free(philo), free(monitor), ERR);
-	return (free(thread), free(philo), free_data(&data), \
+		free_philo(philo), free(monitor), ERR);
+	return (free(thread), free_philo(philo), free_data(&data), \
 	free(monitor), SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:05:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 20:56:14 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/16 15:49:22 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	init_arg(int argc, char **argv, t_arg *arg)
 	arg->number_of_times_each_philosopher_must_eat = NO_OPTION;
 	if (argc == OPTION_ARGC)
 		arg->number_of_times_each_philosopher_must_eat = (int)ft_ato64(argv[5]);
+	arg->is_odd = (arg->number_of_philosophers % 2 == 1);
 	return (SUCCESS);
 }
 
@@ -64,10 +65,21 @@ int	init_philo(t_philo **philo, t_data *data, t_arg *arg)
 	{
 		memset((*philo + i), 0, sizeof(t_philo));
 		(*philo + i)->idx = i;
+		(*philo + i)->is_odd = (i % 2 == 0);
 		(*philo + i)->data = data;
 		(*philo + i)->arg = arg;
-		(*philo + i)->first_fork_id = (i + 1) % arg->number_of_philosophers;
-		(*philo + i)->second_fork_id = i;
+		if (safe_init(&(*philo + i)->philo_mutex, 1))
+			return (free_philo(*philo), ERR);
+		if (i % 2 == 0)
+		{
+			(*philo + i)->first_fork = data->fork_mutex + \
+				(i + 1) % arg->number_of_philosophers;
+			(*philo + i)->second_fork = data->fork_mutex + i;
+			continue ;
+		}
+		(*philo + i)->first_fork = (data->fork_mutex) + i;
+		(*philo + i)->second_fork = data->fork_mutex + \
+			(i + 1) % arg->number_of_philosophers;
 	}
 	return (SUCCESS);
 }

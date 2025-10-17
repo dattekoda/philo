@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 16:50:30 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/11 17:43:44 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/16 13:07:37 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,14 @@ uint64_t	get_now_ms(t_data *data)
 	now = data->now_ms;
 	pthread_mutex_unlock(data->now_ms_mutex);
 	return (now);
+}
+
+uint64_t	get_start_ms(t_data *data)
+{
+	uint64_t	start;
+
+	pthread_mutex_lock(data->data_mutex);
+	start = data->start_ms;
+	pthread_mutex_unlock(data->data_mutex);
+	return (start);
 }

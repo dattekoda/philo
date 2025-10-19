@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:05:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/16 15:49:22 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/19 21:22:58 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,8 @@ int	init_philo(t_philo **philo, t_data *data, t_arg *arg)
 	while (++i < arg->number_of_philosophers)
 	{
 		memset((*philo + i), 0, sizeof(t_philo));
-		(*philo + i)->idx = i;
-		(*philo + i)->is_odd = (i % 2 == 0);
-		(*philo + i)->data = data;
-		(*philo + i)->arg = arg;
+		*(*philo + i) = (t_philo){.idx = i, .is_odd = (i % 2 == 0), \
+			.data = data, .arg = arg};
 		if (safe_init(&(*philo + i)->philo_mutex, 1))
 			return (free_philo(*philo), ERR);
 		if (i % 2 == 0)

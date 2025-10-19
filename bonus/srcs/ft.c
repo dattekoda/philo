@@ -6,13 +6,14 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:33:24 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/17 22:16:35 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/19 21:04:28 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <stddef.h>
+#include <string.h>
+#include <stdlib.h>
 
 int64_t	ft_ato64(const char *s)
 {

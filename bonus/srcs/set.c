@@ -6,14 +6,15 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 22:21:16 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/17 22:25:18 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/19 21:07:04 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "define.h"
 #include "ft.h"
+#include <string.h>
 
-int	set_arg(int argc, char *argv[], t_arg *arg)
+void	set_arg(int argc, char *argv[], t_arg *arg)
 {
 	memset(arg, 0, sizeof(t_arg));
 	arg->number_of_philosophers = (int)ft_ato64(argv[1]);

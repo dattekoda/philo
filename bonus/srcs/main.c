@@ -6,13 +6,16 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 21:50:56 by khanadat          #+#    #+#             */
-/*   Updated: 2025/10/17 22:20:56 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/10/19 21:07:24 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "define.h"
 #include "philo_err.h"
 #include "ft.h"
+#include "set.h"
+
+static int	validate_arg(int argc, char *argv[]);
 
 int	main(int argc, char *argv[])
 {
@@ -20,10 +23,9 @@ int	main(int argc, char *argv[])
 
 	if (validate_arg(argc, argv))
 		return (FAILURE);
-	if (set_arg(argc, argv, &arg))
-		return (FAILURE);
-	if (philo(&arg))
-		return (FAILURE);
+	set_arg(argc, argv, &arg);
+	// if (philo(&arg))
+	// 	return (FAILURE);
 	return (SUCCESS);
 }
 
